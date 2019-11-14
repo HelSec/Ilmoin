@@ -23,4 +23,9 @@ class Organization extends Model
     {
         return 'slug';
     }
+
+    public function events()
+    {
+        return $this->hasMany(Organization::class, 'organization_id', 'id');
+    }
 }
