@@ -14,4 +14,6 @@
 Route::view('/', 'welcome')
     ->name('home');
 
+Route::resource('organizations', 'Organizations\OrganizationController');
+
 Auth::routes();

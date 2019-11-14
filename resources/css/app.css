@@ -4,4 +4,9 @@
 
 @tailwind base;
 @tailwind components;
+
+.card {
+    @apply bg-white p-4 shadow rounded-b my-2;
+}
+
 @tailwind utilities;

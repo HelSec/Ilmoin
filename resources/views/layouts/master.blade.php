@@ -21,9 +21,16 @@
     <div class="bg-white leading-none shadow border-t-8 border-pink-500 p-6">
         <div class="container mx-auto flex justify-between">
             <div>
-                <a href="{{ route('home') }}" class="bg-pink-200 text-pink-800 font-bold p-2 hover:underline">
-                    {{ config('app.name', 'Ilmoin') }}
-                </a>
+                <a href="{{ route('home') }}" class="bg-pink-200 text-pink-800 font-bold p-2 mx-1 hover:underline">
+                    {{ config('app.name', 'Ilmoin') }}</a>
+
+                @foreach([
+                    'All Organizations' => route('organizations.index')
+                ] as $title => $link)
+                    <a href="{{ $link }}" class="p-2 mx-1 hover:bg-pink-300 hover:text-pink-900 hover:underline">
+                        {{ $title }}
+                    </a>
+                @endforeach
             </div>
 
             <div>
