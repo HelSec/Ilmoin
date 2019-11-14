@@ -1,1 +1,1 @@
-require('./bootstrap');
+// empty for now (y u no need js)
