@@ -23,6 +23,9 @@ class CreateOrganizationsTable extends Migration
             $table->text('bio');
             $table->text('description');
 
+            $table->string('avatar')
+                ->nullable();
+
             $table->timestamps();
         });
     }

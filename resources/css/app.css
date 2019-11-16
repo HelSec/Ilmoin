@@ -9,4 +9,17 @@
     @apply bg-white p-4 shadow rounded-b my-2;
 }
 
+p {
+    @apply my-1;
+}
+
+.button-pink {
+    @apply font-bold py-2 px-4 rounded-lg bg-pink-200 text-pink-900;
+}
+
+.button-pink:hover {
+    @apply bg-pink-300;
+}
+
 @tailwind utilities;
+

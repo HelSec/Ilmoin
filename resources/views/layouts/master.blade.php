@@ -12,24 +12,28 @@
         @endif
         {{ config('app.name', 'Ilmoin') }}</title>
 
-    <!-- <link rel="stylesheet"
-          href="https://use.fontawesome.com/releases/v5.10.2/css/all.css"
-          crossorigin="anonymous"> -->
+    <link rel="stylesheet"
+          href="https://use.fontawesome.com/releases/v5.11.2/css/all.css"
+          crossorigin="anonymous">
 </head>
 <body class="font-sans antialiased text-gray-800 leading-tight bg-gray-300 border-t-8 border-pink-700">
 <div id="app">
     <div class="bg-white leading-none shadow border-t-8 border-pink-500 p-6">
-        <div class="container mx-auto flex justify-between">
-            <div>
-                <a href="{{ route('home') }}" class="bg-pink-200 text-pink-800 font-bold p-2 mx-1 hover:underline">
-                    {{ config('app.name', 'Ilmoin') }}</a>
+        <div class="container mx-auto md:flex justify-between">
+            <div class="md:flex">
+                <div>
+                    <a href="{{ route('home') }}" class="bg-pink-200 hover:bg-pink-400 text-pink-800 font-bold p-2 mx-1 hover:underline">
+                        {{ config('app.name', 'Ilmoin') }}</a>
+                </div>
 
                 @foreach([
                     'All Organizations' => route('organizations.index')
                 ] as $title => $link)
-                    <a href="{{ $link }}" class="p-2 mx-1 hover:bg-pink-300 hover:text-pink-900 hover:underline">
-                        {{ $title }}
-                    </a>
+                    <div>
+                        <a href="{{ $link }}" class="p-2 mx-1 hover:bg-pink-300 hover:text-pink-900 hover:underline">
+                            {{ $title }}
+                        </a>
+                    </div>
                 @endforeach
             </div>
 

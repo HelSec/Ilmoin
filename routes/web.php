@@ -15,5 +15,6 @@ Route::view('/', 'welcome')
     ->name('home');
 
 Route::resource('organizations', 'Organizations\OrganizationController');
+Route::resource('events', 'Organizations\EventController');
 
 Auth::routes();

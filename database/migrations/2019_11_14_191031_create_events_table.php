@@ -20,6 +20,9 @@ class CreateEventsTable extends Migration
 
             $table->string('name');
             $table->text('description');
+            $table->string('location');
+
+            $table->timestampTz('date');
 
             $table->timestamps();
         });
