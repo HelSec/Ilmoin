@@ -9,8 +9,10 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
+        "ext-json": "*",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "^6.2",
+        "laravel/socialite": "^4.3",
         "laravel/tinker": "^1.0",
         "parsedown/laravel": "^1.2",
         "qcod/laravel-imageup": "^1.0",

@@ -35,15 +35,16 @@
                                 {{ $event->name }}
                             </a>
 
+                            <div class="flex my-2">
+                                <div class="text-gray-700 mr-4">
+                                    <i class="fas fa-calendar"></i>
+                                    {{ \App\Utils\Date::format($event->date) }}
+                                </div>
 
-                            <div class="text-gray-600">
-                                <i class="fas fa-calendar"></i>
-                                {{ \App\Utils\Date::format($event->date) }}
-                            </div>
-
-                            <div class="text-gray-600">
-                                <i class="fas fa-location-arrow"></i>
-                                {{ $event->location }}
+                                <div class="text-gray-700">
+                                    <i class="fas fa-location-arrow"></i>
+                                    {{ $event->location }}
+                                </div>
                             </div>
 
                             <div class="mb-4">
@@ -75,6 +76,18 @@
                             <a class="font-bold text-2xl mb-2 hover:underline" href="{{ route('events.show', $event) }}">
                                 {{ $event->name }}
                             </a>
+
+                            <div class="flex my-2">
+                                <div class="text-gray-700 mr-4">
+                                    <i class="fas fa-calendar"></i>
+                                    {{ \App\Utils\Date::format($event->date) }}
+                                </div>
+
+                                <div class="text-gray-700">
+                                    <i class="fas fa-location-arrow"></i>
+                                    {{ $event->location }}
+                                </div>
+                            </div>
 
                             <div class="mb-4">
                                 <div class="text-gray-700 text-base h-8 overflow-hidden">

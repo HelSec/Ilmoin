@@ -38,7 +38,18 @@
             </div>
 
             <div>
-                user details here
+                @auth
+                    {{ Auth::user()->email }}
+
+                    <a href="{{ route('logout') }}"
+                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        Log out
+                    </a>
+                @else
+                    <a href="{{ route('login') }}">
+                        Login
+                    </a>
+                @endif
             </div>
         </div>
     </div>

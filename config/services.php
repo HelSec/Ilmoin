@@ -30,4 +30,10 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'mattermost' => [
+        'client_id' => env('MATTERMOST_CLIENT_ID'),
+        'client_secret' => env('MATTERMOST_CLIENT_SECRET'),
+        'redirect' => env('MATTERMOST_REDIRECT_URL'),
+    ],
+
 ];
