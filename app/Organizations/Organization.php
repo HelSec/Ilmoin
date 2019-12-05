@@ -47,6 +47,11 @@ class Organization extends Model
             ->limit(3);
     }
 
+    public function groups()
+    {
+        return $this->hasMany(OrganizationGroup::class, 'organization_id', 'id');
+    }
+
     protected static $imageFields = [
         'avatar' => [
             'width' => '64',

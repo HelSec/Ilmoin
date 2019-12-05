@@ -104,4 +104,48 @@
             @endforeach
         </div>
     @endif
+
+    @if($organization->groups->isNotEmpty())
+        <div class="mt-6">
+            <div class="font-bold text-xl mb-2">
+                Groups
+            </div>
+
+            @foreach($organization->groups as $group)
+                <div class="card">
+                    <div class="flex">
+                        <div>
+                            <div>
+                                <a class="font-bold text-2xl mb-2 hover:underline" href="{{ route('events.show', $group) }}">
+                                    {{ $group->name }}
+                                </a>
+                            </div>
+
+                            @if($organization->admin_group_id === $group->id)
+                                <div class="my-2">
+                                    <span class="badge-blue">
+                                        Organization administrator
+                                    </span>
+                                </div>
+                            @endif
+
+                            @if($group->description)
+                                <div class="mb-4">
+                                    <div class="text-gray-700 text-base h-8 overflow-hidden">
+                                        @parsedown($group->description)
+                                    </div>
+                                </div>
+                            @endif
+
+                            <div class="mt-4">
+                                <a href="{{ route('events.show', $group) }}" class="button-pink">
+                                    Show more
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    @endif
 @endsection

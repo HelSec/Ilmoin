@@ -13,6 +13,10 @@ p {
     @apply my-1;
 }
 
+.badge-blue {
+    @apply text-sm font-semibold bg-blue-200 text-blue-900 px-2 py-1 rounded;
+}
+
 .button-pink {
     @apply font-bold py-2 px-4 rounded-lg bg-pink-200 text-pink-900;
 }
