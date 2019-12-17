@@ -24,4 +24,5 @@ Route::post('logout', 'Auth\MattermostAuthController@logout')
 
 Route::resource('organizations', 'Organizations\OrganizationController');
 Route::resource('events', 'Organizations\EventController');
+Route::resource('groups', 'Organizations\OrganizationGroupController');
 

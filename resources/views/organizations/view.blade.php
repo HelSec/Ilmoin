@@ -116,7 +116,7 @@
                     <div class="flex">
                         <div>
                             <div>
-                                <a class="font-bold text-2xl mb-2 hover:underline" href="{{ route('events.show', $group) }}">
+                                <a class="font-bold text-2xl mb-2 hover:underline" href="{{ route('groups.show', $group) }}">
                                     {{ $group->name }}
                                 </a>
                             </div>
@@ -138,7 +138,7 @@
                             @endif
 
                             <div class="mt-4">
-                                <a href="{{ route('events.show', $group) }}" class="button-pink">
+                                <a href="{{ route('groups.show', $group) }}" class="button-pink">
                                     Show more
                                 </a>
                             </div>
