@@ -121,13 +121,17 @@
                                 </a>
                             </div>
 
-                            @if($organization->admin_group_id === $group->id)
-                                <div class="my-2">
-                                    <span class="badge-blue">
+                            <div class="flex my-2">
+                                <div class="badge-green">
+                                    {{ $group->members->count() }} member(s)
+                                </div>
+
+                                @if($organization->admin_group_id === $group->id)
+                                    <span class="badge-blue ml-2">
                                         Organization administrator
                                     </span>
-                                </div>
-                            @endif
+                                @endif
+                            </div>
 
                             @if($group->description)
                                 <div class="mb-4">

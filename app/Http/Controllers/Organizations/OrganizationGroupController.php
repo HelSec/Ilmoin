@@ -42,21 +42,22 @@ class OrganizationGroupController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Organizations\OrganizationGroup  $organizationGroup
+     * @param OrganizationGroup $group
      * @return \Illuminate\Http\Response
      */
-    public function show(OrganizationGroup $organizationGroup)
+    public function show(OrganizationGroup $group)
     {
-        //
+        $group->load('organization', 'members');
+        return view('groups.view', ['group' => $group]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Organizations\OrganizationGroup  $organizationGroup
+     * @param OrganizationGroup $group
      * @return \Illuminate\Http\Response
      */
-    public function edit(OrganizationGroup $organizationGroup)
+    public function edit(OrganizationGroup $group)
     {
         //
     }
@@ -65,10 +66,10 @@ class OrganizationGroupController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Organizations\OrganizationGroup  $organizationGroup
+     * @param OrganizationGroup $group
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, OrganizationGroup $organizationGroup)
+    public function update(Request $request, OrganizationGroup $group)
     {
         //
     }
@@ -76,10 +77,10 @@ class OrganizationGroupController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Organizations\OrganizationGroup  $organizationGroup
+     * @param OrganizationGroup $group
      * @return \Illuminate\Http\Response
      */
-    public function destroy(OrganizationGroup $organizationGroup)
+    public function destroy(OrganizationGroup $group)
     {
         //
     }

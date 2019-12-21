@@ -2,6 +2,8 @@
 
 namespace App\Users;
 
+use App\Organizations\OrganizationGroup;
+use App\Organizations\OrganizationGroupMember;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -21,4 +23,9 @@ class User extends Authenticatable
     protected $casts = [
         'is_super_admin' => 'boolean',
     ];
+
+    public function groups()
+    {
+        return $this->belongsToMany(OrganizationGroup::class, OrganizationGroupMember::class);
+    }
 }

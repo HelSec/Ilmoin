@@ -48,7 +48,7 @@ class OrganizationController extends Controller
      */
     public function show(Organization $organization)
     {
-        $organization->loadMissing('upcomingEvents', 'pastEvents', 'groups');
+        $organization->loadMissing('upcomingEvents', 'pastEvents', 'groups', 'groups.members');
         return view('organizations.view', compact('organization'));
     }
 
