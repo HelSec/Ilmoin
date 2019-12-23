@@ -108,46 +108,58 @@
     @if($organization->groups->isNotEmpty())
         <div class="mt-6">
             <div class="font-bold text-xl mb-2">
-                Groups
+                Groups ({{ $organization->groups->count() }})
             </div>
 
             @foreach($organization->groups as $group)
                 <div class="card">
-                    <div class="flex">
-                        <div>
+                    @can('view', $group)
+                        <div class="flex">
                             <div>
-                                <a class="font-bold text-2xl mb-2 hover:underline" href="{{ route('groups.show', $group) }}">
-                                    {{ $group->name }}
-                                </a>
-                            </div>
-
-                            <div class="flex my-2">
-                                <div class="badge-green">
-                                    {{ $group->members->count() }} member(s)
+                                <div>
+                                    <a class="font-bold text-2xl mb-2 hover:underline" href="{{ route('groups.show', $group) }}">
+                                        {{ $group->name }}
+                                    </a>
                                 </div>
 
-                                @if($organization->admin_group_id === $group->id)
-                                    <span class="badge-blue ml-2">
-                                        Organization administrator
-                                    </span>
-                                @endif
-                            </div>
-
-                            @if($group->description)
-                                <div class="mb-4">
-                                    <div class="text-gray-700 text-base h-8 overflow-hidden">
-                                        @parsedown($group->description)
+                                <div class="flex my-2">
+                                    <div class="badge-green">
+                                        {{ $group->members->count() }} member(s)
                                     </div>
-                                </div>
-                            @endif
 
-                            <div class="mt-4">
-                                <a href="{{ route('groups.show', $group) }}" class="button-pink">
-                                    Show more
-                                </a>
+                                    @if($organization->admin_group_id === $group->id)
+                                        <span class="badge-blue ml-2">
+                                            Organization administrator
+                                        </span>
+                                    @endif
+
+                                    @if(!$group->is_public)
+                                        <span class="badge-red ml-2">
+                                            Private group
+                                        </span>
+                                    @endif
+                                </div>
+
+                                @if($group->description)
+                                    <div class="mb-4">
+                                        <div class="text-gray-700 text-base h-8 overflow-hidden">
+                                            @parsedown($group->description)
+                                        </div>
+                                    </div>
+                                @endif
+
+                                <div class="mt-4">
+                                    <a href="{{ route('groups.show', $group) }}" class="button-pink">
+                                        Show more
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @else
+                        <div>
+                            This group is hidden from the public view.
+                        </div>
+                    @endif
                 </div>
             @endforeach
         </div>

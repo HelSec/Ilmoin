@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
-use App\Http\Controllers\Auth\MattermostAuthController;
+use App\Organizations\Organization;
+use App\Organizations\OrganizationGroup;
+use App\Policies\Organizations\OrganizationGroupPolicy;
+use App\Policies\Organizations\OrganizationPolicy;
 use App\Users\MattermostSocialiteProvider;
 use App\Users\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -15,8 +18,9 @@ class AuthServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    protected $policies = [
-        // 'App\Model' => 'App\Policies\ModelPolicy',
+    protected array $policies = [
+        Organization::class => OrganizationPolicy::class,
+        OrganizationGroup::class => OrganizationGroupPolicy::class,
     ];
 
     /**

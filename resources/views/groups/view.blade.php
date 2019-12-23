@@ -14,13 +14,23 @@
                     A group in the <a href="{{ route('organizations.show', $group->organization) }}" class="text-black hover:underline">{{ $group->organization->name }}</a> organization.
                 </div>
 
-                @if($group->organization->admin_group_id === $group->id)
-                    <div class="my-2">
-                        <span class="badge-blue">
+                <div class="my-2 flex">
+                    <div class="badge-green">
+                        {{ $group->members->count() }} member(s)
+                    </div>
+
+                    @if($group->organization->admin_group_id === $group->id)
+                        <span class="badge-blue ml-2">
                             Organization administrator
                         </span>
-                    </div>
-                @endif
+                    @endif
+
+                    @if(!$group->is_public)
+                        <span class="badge-red ml-2">
+                            Private group
+                        </span>
+                    @endif
+                </div>
 
                 <div class="text-gray-700 text-base">
                     @parsedown($group->description)
@@ -31,11 +41,15 @@
 
     <div class="card">
         <div class="font-bold text-xl mb-2">
-            Members
+            Members ({{ $group->members->count() }})
         </div>
 
         <div>
-            {{ json_encode($group->members) }}
+            @can('viewMembers', $group)
+                {{ json_encode($group->members) }}
+            @else
+                You may not view the member list of this group.
+            @endif
         </div>
     </div>
 @endsection

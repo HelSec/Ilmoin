@@ -24,7 +24,14 @@ class DatabaseSeeder extends Seeder
         Organization::with('groups')
             ->get()->each(function (Organization $organization) {
                 if ($organization->groups->isNotEmpty()) {
-                    $organization->admin_group_id = $organization->groups->first()->id;
+                    $firstGroup = $organization->groups->first();
+                    $firstGroup->update([
+                        'is_public' => true,
+                        'is_member_list_public' => true,
+                        'is_member_list_shown_to_other_members' => true,
+                    ]);
+
+                    $organization->admin_group_id = $firstGroup->id;
                     $organization->saveOrFail();
                 }
             });

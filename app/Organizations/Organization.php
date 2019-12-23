@@ -52,6 +52,12 @@ class Organization extends Model
         return $this->hasMany(OrganizationGroup::class, 'organization_id', 'id');
     }
 
+    public function adminGroup()
+    {
+        return $this->hasOne(OrganizationGroup::class, 'organization_id', 'id')
+            ->where('id', $this->admin_group_id);
+    }
+
     protected static $imageFields = [
         'avatar' => [
             'width' => '64',

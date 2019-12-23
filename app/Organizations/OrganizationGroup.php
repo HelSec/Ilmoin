@@ -11,6 +11,12 @@ class OrganizationGroup extends Model
 {
     protected $guarded = [];
 
+    protected $casts = [
+        'is_public' => 'boolean',
+        'is_member_list_public' => 'boolean',
+        'is_member_list_shown_to_other_members' => 'boolean',
+    ];
+
     use HasSlug;
 
     public function getSlugOptions(): SlugOptions

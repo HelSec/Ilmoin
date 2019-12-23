@@ -25,6 +25,10 @@ p {
     @apply badge bg-green-200 text-green-900;
 }
 
+.badge-red {
+    @apply badge bg-red-200 text-red-900;
+}
+
 .button-pink {
     @apply font-bold py-2 px-4 rounded-lg bg-pink-200 text-pink-900;
 }

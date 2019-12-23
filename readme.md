@@ -1,6 +1,8 @@
 # Ilmoin
 > Event ilmoitttautuminen as an open-source effort (EIaaOE); a [HelSec](https://helsec.fi) project
 
+Please note that PHP 7.4 is required.
+
 ## About Ilmoin
 
 Ilmoin is an open-source event management platform, developed for and by the Disobey CitySec community. It's powered
@@ -14,7 +16,7 @@ and join the `Dev : Ilmoin` channel.
 ## Security
 
 We're a information security community, so we take security pretty seriously. To report a vulnerability, send an email
-to `taavi@helsec.fi`. There might(TM) be some super-exclusive swag as a reward.
+to `taavi@helsec.fi`. There might be some exclusive rewards.
 
 We will have a testing instance up by the time the production site is up.
 
