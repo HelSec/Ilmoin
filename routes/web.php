@@ -22,7 +22,15 @@ Route::get('auth/mattermost/callback', 'Auth\MattermostAuthController@callback')
 Route::post('logout', 'Auth\MattermostAuthController@logout')
     ->name('logout');
 
-Route::resource('organizations', 'Organizations\OrganizationController');
-Route::resource('events', 'Organizations\EventController');
-Route::resource('groups', 'Organizations\OrganizationGroupController');
+Route::get('organizations', 'Organizations\OrganizationController@index')
+    ->name('organizations.index');
+
+Route::get('organizations/{organization}', 'Organizations\OrganizationController@show')
+    ->name('organizations.show');
+
+Route::get('events/{event}', 'Organizations\EventController@show')
+    ->name('events.show');
+
+Route::get('groups/{group}', 'Organizations\OrganizationGroupController@show')
+    ->name('groups.show');
 

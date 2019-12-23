@@ -13,4 +13,10 @@ class Event extends Model
     {
         return $this->belongsTo(Organization::class, 'organization_id', 'id');
     }
+
+    public function registrationOptions()
+    {
+        return $this->hasMany(EventRegistrationOption::class)
+            ->orderByDesc('priority');
+    }
 }

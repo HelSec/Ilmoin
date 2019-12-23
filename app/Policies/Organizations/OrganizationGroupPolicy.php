@@ -17,11 +17,11 @@ class OrganizationGroupPolicy
 
     public function view(?User $user, OrganizationGroup $group)
     {
-        return $group->is_public || ($user ? ($group->members()->where('users.id', $user->id)->exists() || $user->can('manage', $group->organization)) : false);
+        return $group->is_public || ($user ? ($group->hasMember($user) || $user->can('manage', $group->organization)) : false);
     }
 
     public function viewMembers(?User $user, OrganizationGroup $group)
     {
-        return $group->is_member_list_public || ($user ? ($group->is_member_list_shown_to_other_members && $group->members()->where('users.id', $user->id)->exists()) || $user->can('manage', $group->organization) : false);
+        return $group->is_member_list_public || ($user ? ($group->is_member_list_shown_to_other_members && $group->hasMember($user)) || $user->can('manage', $group->organization) : false);
     }
 }

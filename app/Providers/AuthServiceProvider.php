@@ -2,12 +2,15 @@
 
 namespace App\Providers;
 
+use App\Organizations\Events\Event;
 use App\Organizations\Organization;
 use App\Organizations\OrganizationGroup;
+use App\Policies\Organizations\EventPolicy;
 use App\Policies\Organizations\OrganizationGroupPolicy;
 use App\Policies\Organizations\OrganizationPolicy;
 use App\Users\MattermostSocialiteProvider;
 use App\Users\User;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -21,13 +24,14 @@ class AuthServiceProvider extends ServiceProvider
     protected array $policies = [
         Organization::class => OrganizationPolicy::class,
         OrganizationGroup::class => OrganizationGroupPolicy::class,
+        Event::class => EventPolicy::class,
     ];
 
     /**
      * Register any authentication / authorization services.
      *
      * @return void
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @throws BindingResolutionException
      */
     public function boot()
     {

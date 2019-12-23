@@ -36,15 +36,22 @@
                             </a>
 
                             <div class="flex my-2">
-                                <div class="text-gray-700 mr-4">
+                                <div class="text-gray-700">
                                     <i class="fas fa-calendar"></i>
                                     {{ \App\Utils\Date::format($event->date) }}
                                 </div>
 
-                                <div class="text-gray-700">
+                                <div class="text-gray-700 ml-4">
                                     <i class="fas fa-location-arrow"></i>
                                     {{ $event->location }}
                                 </div>
+
+                                @if($event->max_slots !== null)
+                                    <div class="text-grey-700 ml-4">
+                                        <i class="fas fa-users"></i>
+                                        {{ $event->max_slots }} slots
+                                    </div>
+                                @endif
                             </div>
 
                             <div class="mb-4">
@@ -78,15 +85,22 @@
                             </a>
 
                             <div class="flex my-2">
-                                <div class="text-gray-700 mr-4">
+                                <div class="text-gray-700">
                                     <i class="fas fa-calendar"></i>
                                     {{ \App\Utils\Date::format($event->date) }}
                                 </div>
 
-                                <div class="text-gray-700">
+                                <div class="text-gray-700 ml-4">
                                     <i class="fas fa-location-arrow"></i>
                                     {{ $event->location }}
                                 </div>
+
+                                @if($event->max_slots !== null)
+                                    <div class="text-grey-700 ml-4">
+                                        <i class="fas fa-users"></i>
+                                        {{ $event->max_slots }} slots
+                                    </div>
+                                @endif
                             </div>
 
                             <div class="mb-4">

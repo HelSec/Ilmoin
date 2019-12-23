@@ -40,4 +40,9 @@ class OrganizationGroup extends Model
     {
         return $this->belongsToMany(User::class, OrganizationGroupMember::class);
     }
+
+    public function hasMember(User $user)
+    {
+        return $this->members->contains('id', $user->id);
+    }
 }

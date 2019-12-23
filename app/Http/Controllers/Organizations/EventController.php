@@ -47,7 +47,7 @@ class EventController extends Controller
      */
     public function show(Event $event)
     {
-        $event->loadMissing('organization');
+        $event->loadMissing('organization', 'registrationOptions');
         return view('events.view', compact('event'));
     }
 

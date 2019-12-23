@@ -18,6 +18,6 @@ class OrganizationPolicy
     public function manage(User $user, Organization $organization)
     {
         $adminGroup = $organization->adminGroup;
-        return $adminGroup ? $adminGroup->members()->where('users.id', $user->id)->exists() : false;
+        return $adminGroup ? $adminGroup->hasMember($user) : false;
     }
 }
