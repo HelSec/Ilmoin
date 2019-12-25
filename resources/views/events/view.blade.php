@@ -6,8 +6,24 @@
     <div class="card">
         <div class="flex">
             <div>
-                <div class="font-bold text-2xl mb-2">
-                    {{ $event->name }}
+                <div class="md:flex md:justify-between">
+                    <div class="font-bold text-2xl mb-2">
+                        {{ $event->name }}
+                    </div>
+
+                    <div>
+                        @auth
+                            @if($event->getRegistrationOption(Auth::user()) !== null)
+                                <a href="https://example.org" class="button-pink">
+                                    Register
+                                </a>
+                            @endif
+                        @else
+                            <a href="{{ route('login') }}" class="font-bold hover:underline text-black">
+                                Log in to attend
+                            </a>
+                        @endif
+                    </div>
                 </div>
 
                 <div class="text-gray-800 my-2">
@@ -52,14 +68,14 @@
                         @if($event->registrationOptions->isEmpty())
                             No event registration options configured.
                         @else
-                            <ul>
+                            <ul class="list-disc ml-6">
                                 @foreach($event->registrationOptions as $option)
                                     <li>
-                                        (#{{ $option->id }} with priority {{ $option->priority }}) Users
+                                        (config#{{ $option->id }} with priority {{ $option->priority }}) Users
                                         @if($option->groupRequirements->isNotEmpty())
                                             in groups [
                                             @foreach($option->groupRequirements as $group)
-                                                <a href="{{ route('groups.show', $group) }}" class="hover:underline font-bold">{{ $group->name }} ({{ $group->id }})</a>;
+                                                <a href="{{ route('groups.show', $group) }}" class="hover:underline"><span class="font-bold">{{ $group->name }}</span> (ID {{ $group->id }})</a>{{ $loop->last ? '' : ';' }}
                                             @endforeach
                                             ]
                                         @endif

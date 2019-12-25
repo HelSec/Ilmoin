@@ -10,6 +10,15 @@ class EventRegistrationOption extends Model
     protected $guarded = [];
     protected $with = ['groupRequirements'];
 
+    protected $casts = [
+        'count_to_slots' => 'boolean',
+    ];
+
+    protected $dates = [
+        'opens_at',
+        'closes_at',
+    ];
+
     public function event()
     {
         return $this->belongsTo(Event::class);
