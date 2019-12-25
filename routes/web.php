@@ -31,6 +31,9 @@ Route::get('organizations/{organization}', 'Organizations\OrganizationController
 Route::get('events/{event}', 'Organizations\EventController@show')
     ->name('events.show');
 
+Route::match(['get', 'post'], 'events/{event}/register', 'Organizations\EventController@register')
+    ->name('events.register');
+
 Route::get('groups/{group}', 'Organizations\OrganizationGroupController@show')
     ->name('groups.show');
 

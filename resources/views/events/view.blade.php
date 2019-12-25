@@ -13,8 +13,8 @@
 
                     <div>
                         @auth
-                            @if($event->getRegistrationOption(Auth::user()) !== null)
-                                <a href="https://example.org" class="button-pink">
+                            @can('attend', $event)
+                                <a href="{{ route('events.register', $event) }}" class="button-pink">
                                     Register
                                 </a>
                             @endif
@@ -92,4 +92,8 @@
             </div>
         </div>
     @endif
+
+    <div class="card">
+        {{ json_encode($event->registrations) }}
+    </div>
 @endsection

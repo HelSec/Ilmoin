@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Organizations;
 
 use App\Http\Controllers\Controller;
 use App\Organizations\Events\Event;
+use App\Organizations\Events\EventRegistration;
+use App\Users\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class EventController extends Controller
 {
@@ -42,7 +45,7 @@ class EventController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Organizations\Events\Event  $event
+     * @param Event $event
      * @return \Illuminate\Http\Response
      */
     public function show(Event $event)
@@ -54,7 +57,7 @@ class EventController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Organizations\Events\Event  $event
+     * @param Event $event
      * @return \Illuminate\Http\Response
      */
     public function edit(Event $event)
@@ -66,7 +69,7 @@ class EventController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Organizations\Events\Event  $event
+     * @param Event $event
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Event $event)
@@ -77,11 +80,47 @@ class EventController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Organizations\Events\Event  $event
+     * @param Event $event
      * @return \Illuminate\Http\Response
      */
     public function destroy(Event $event)
     {
         //
+    }
+
+    public function register(Request $request, Event $event)
+    {
+        if (!Gate::check('attend', $event)) {
+            return view('generic.message', [
+                'header' => 'Can\'t attend this event',
+                'title' => 'Can\'t attend this event',
+                'message' => 'You are currently to unable to attend this event. There might be multiple reasons for this, such as the event being full, the registration being closed, or some other reason.',
+            ]);
+        }
+
+        $option = $event->getRegistrationOption($request->user());
+
+        if (!$option) {
+            return 'wtf <!-- EventController#showRegisterForm -->';
+        }
+
+        $confirmed = !$option->count_to_slots || $event->max_slots - $event->getTakenSlots() >= 1;
+
+        if ($request->isMethod('post')) {
+            $registration = EventRegistration::create([
+                'event_id' => $event->id,
+                'user_id' => $request->user()->id,
+                'confirmed' => $confirmed,
+                'waitlist_priority' => $option->waitlist_priority,
+                'count_to_slots' => $option->count_to_slots,
+            ]);
+
+            return redirect()->route('events.show', $event);
+        }
+
+        return view('events.register', [
+            'event' => $event,
+            'confirmed' => $confirmed,
+        ]);
     }
 }

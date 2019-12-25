@@ -22,6 +22,12 @@ class Event extends Model
             ->orderByDesc('priority');
     }
 
+    public function registrations()
+    {
+        return $this->hasMany(EventRegistration::class)
+            ->with('user');
+    }
+
     /**
      * @param User $user
      * @return EventRegistrationOption|null
@@ -39,5 +45,12 @@ class Event extends Model
         }
 
         return null;
+    }
+
+    public function getTakenSlots()
+    {
+        return $this->relationLoaded('registrations')
+            ? $this->registrations->filter(fn (EventRegistration $registration) => $registration->count_to_slots && $registration->confirmed)->count()
+            : $this->registrations()->where('count_to_slots', true)->where('confirmed', true)->count();
     }
 }

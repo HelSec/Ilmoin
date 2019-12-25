@@ -14,4 +14,10 @@ class EventPolicy
     {
         return $user->can('manage', $event->organization);
     }
+
+    public function attend(User $user, Event $event)
+    {
+        $option = $event->getRegistrationOption($user);
+        return $option !== null && $event->registrations()->where('user_id', $user->id)->doesntExist();
+    }
 }
