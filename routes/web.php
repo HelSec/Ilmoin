@@ -40,3 +40,6 @@ Route::match(['get', 'post'], 'events/{event}/cancel', 'Organizations\EventContr
 Route::get('groups/{group}', 'Organizations\OrganizationGroupController@show')
     ->name('groups.show');
 
+
+Route::get('user/settings/email', 'User\SettingsController@showEmailSettings')
+    ->name('settings.email');
