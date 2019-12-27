@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Organizations;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\ProcessWaitlistForEvent;
 use App\Organizations\Events\Event;
 use App\Organizations\Events\EventRegistration;
 use App\Users\User;
@@ -101,13 +102,13 @@ class EventController extends Controller
         $option = $event->getRegistrationOption($request->user());
 
         if (!$option) {
-            return 'wtf <!-- EventController#showRegisterForm -->';
+            return 'wtf <!-- EventController#register -->';
         }
 
         $confirmed = !$option->count_to_slots || $event->max_slots - $event->getTakenSlots() >= 1;
 
         if ($request->isMethod('post')) {
-            $registration = EventRegistration::create([
+            EventRegistration::create([
                 'event_id' => $event->id,
                 'user_id' => $request->user()->id,
                 'confirmed' => $confirmed,
@@ -121,6 +122,36 @@ class EventController extends Controller
         return view('events.register', [
             'event' => $event,
             'confirmed' => $confirmed,
+        ]);
+    }
+
+    public function cancel(Request $request, Event $event)
+    {
+        if (!Gate::check('cancel', $event)) {
+            return view('generic.message', [
+                'header' => 'Can\'t cancel your registration to this event',
+                'title' => 'Can\'t cancel your registration to this event',
+                'message' => 'You are currently to unable to cancel your registration to this event.',
+            ]);
+        }
+
+        $registration = $event->registrations()->where('user_id', $request->user()->id)->first();
+
+        if (!$registration) {
+            return 'wtf <!-- EventController#cancel -->';
+        }
+
+        if ($request->isMethod('post')) {
+            $registration->delete();
+
+            ProcessWaitlistForEvent::dispatch($event);
+
+            return redirect()->route('events.show', $event);
+        }
+
+        return view('events.cancel', [
+            'event' => $event,
+            'registration' => $registration,
         ]);
     }
 }

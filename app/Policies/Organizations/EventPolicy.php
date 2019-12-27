@@ -17,7 +17,11 @@ class EventPolicy
 
     public function attend(User $user, Event $event)
     {
-        $option = $event->getRegistrationOption($user);
-        return $option !== null && $event->registrations()->where('user_id', $user->id)->doesntExist();
+        return $event->getRegistrationOption($user) !== null && $event->registrations()->where('user_id', $user->id)->doesntExist();
+    }
+
+    public function cancel(User $user, Event $event)
+    {
+        return $event->registrations()->where('user_id', $user->id)->exists();
     }
 }

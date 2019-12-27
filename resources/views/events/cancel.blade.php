@@ -1,12 +1,12 @@
 @extends('layouts.master')
 
-@section('title', 'Attend ' . $event->name)
+@section('title', 'Cancel your registration from ' . $event->name)
 @section('content')
     <div class="card">
         <div class="flex">
             <div>
                 <div class="font-semibold text-2xl mb-2">
-                    You're about to register to <a href="{{ route('events.show', $event) }}" class="font-bold hover:underline">{{ $event->name }}</a>
+                    You're about cancel of your attendance from <a href="{{ route('events.show', $event) }}" class="font-bold hover:underline">{{ $event->name }}</a>
                 </div>
 
                 <div class="text-gray-800 my-2">
@@ -43,10 +43,10 @@
     </div>
 
     <div class="card">
-        <form action="{{ route('events.register', $event) }}" method="post">
+        <form action="{{ route('events.cancel', $event) }}" method="post">
             @csrf
             <button type="submit" class="button-pink">
-                Register {{ $confirmed ? '' : ' to waitlist' }}
+                Cancel
             </button>
         </form>
     </div>

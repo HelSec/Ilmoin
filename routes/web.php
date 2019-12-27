@@ -34,6 +34,9 @@ Route::get('events/{event}', 'Organizations\EventController@show')
 Route::match(['get', 'post'], 'events/{event}/register', 'Organizations\EventController@register')
     ->name('events.register');
 
+Route::match(['get', 'post'], 'events/{event}/cancel', 'Organizations\EventController@cancel')
+    ->name('events.cancel');
+
 Route::get('groups/{group}', 'Organizations\OrganizationGroupController@show')
     ->name('groups.show');
 

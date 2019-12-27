@@ -17,6 +17,10 @@
                                 <a href="{{ route('events.register', $event) }}" class="button-pink">
                                     Register
                                 </a>
+                            @elsecan('cancel', $event)
+                                <a href="{{ route('events.cancel', $event) }}" class="button-pink">
+                                    Cancel
+                                </a>
                             @endif
                         @else
                             <a href="{{ route('login') }}" class="font-bold hover:underline text-black">
@@ -79,7 +83,7 @@
                                             @endforeach
                                             ]
                                         @endif
-                                        are able to register between {{ $option->opens_at }} and {{ $option->closes_at }}. They have waitlist priority of {{ $option->waitlist_priority }}.
+                                        are able to register between {{ \App\Utils\Date::format($option->opens_at) }} and {{ \App\Utils\Date::format($option->closes_at) }}. They have waitlist priority of {{ $option->waitlist_priority }}.
                                         @if(!$option->count_to_slots)
                                             They do not count towards the slot limit.
                                         @endif
