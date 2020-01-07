@@ -24,4 +24,13 @@ class EventPolicy
     {
         return $event->registrations()->where('user_id', $user->id)->exists();
     }
+
+    public function confirm(User $user, Event $event)
+    {
+        return $event->registrations()
+            ->where('user_id', $user->id)
+            ->where('confirmed', false)
+            ->where('waitlist_confirmation_required_by', '!=', null)
+            ->exists();
+    }
 }

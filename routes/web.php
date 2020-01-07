@@ -31,8 +31,15 @@ Route::get('organizations/{organization}', 'Organizations\OrganizationController
 Route::get('events/{event}', 'Organizations\EventController@show')
     ->name('events.show');
 
-Route::match(['get', 'post'], 'events/{event}/register', 'Organizations\EventController@register')
+Route::get('events/{event}/register', 'Organizations\EventController@showRegistrationForm')
     ->name('events.register');
+
+Route::post('events/{event}/register', 'Organizations\EventController@processRegistration');
+
+Route::get('events/{event}/confirm', 'Organizations\EventController@showConfirmForm')
+    ->name('events.confirm');
+
+Route::post('events/{event}/confirm', 'Organizations\EventController@processConfirm');
 
 Route::match(['get', 'post'], 'events/{event}/cancel', 'Organizations\EventController@cancel')
     ->name('events.cancel');

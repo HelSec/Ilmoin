@@ -51,6 +51,6 @@ class Event extends Model
     {
         return $this->relationLoaded('registrations')
             ? $this->registrations->filter(fn (EventRegistration $registration) => $registration->count_to_slots && ($registration->confirmed || $registration->waitlist_confirmation_required_by !== null))->count()
-            : $this->registrations()->where('count_to_slots', true)->where('confirmed', true)->orWhere('waitlist_confirmation_required_by', null)->count();
+            : $this->registrations()->where('count_to_slots', true)->where('confirmed', true)->orWhere('waitlist_confirmation_required_by', '!=', null)->count();
     }
 }

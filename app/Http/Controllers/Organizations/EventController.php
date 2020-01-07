@@ -89,7 +89,7 @@ class EventController extends Controller
         //
     }
 
-    public function register(Request $request, Event $event)
+    public function showRegistrationForm(Request $request, Event $event)
     {
         if (!Gate::check('attend', $event)) {
             return view('generic.message', [
@@ -102,27 +102,82 @@ class EventController extends Controller
         $option = $event->getRegistrationOption($request->user());
 
         if (!$option) {
-            return 'wtf <!-- EventController#register -->';
+            return 'wtf <!-- EventController#showRegistrationForm -->';
         }
 
         $confirmed = !$option->count_to_slots || $event->max_slots - $event->getTakenSlots() >= 1;
-
-        if ($request->isMethod('post')) {
-            EventRegistration::create([
-                'event_id' => $event->id,
-                'user_id' => $request->user()->id,
-                'confirmed' => $confirmed,
-                'waitlist_priority' => $option->waitlist_priority,
-                'count_to_slots' => $option->count_to_slots,
-            ]);
-
-            return redirect()->route('events.show', $event);
-        }
 
         return view('events.register', [
             'event' => $event,
             'confirmed' => $confirmed,
         ]);
+    }
+
+    public function processRegistration(Request $request, Event $event)
+    {
+        if (!Gate::check('attend', $event)) {
+            return view('generic.message', [
+                'header' => 'Can\'t attend this event',
+                'title' => 'Can\'t attend this event',
+                'message' => 'You are currently to unable to attend this event. There might be multiple reasons for this, such as the event being full, the registration being closed, or some other reason.',
+            ]);
+        }
+
+        $option = $event->getRegistrationOption($request->user());
+
+        if (!$option) {
+            return 'wtf <!-- EventController#processRegistration -->';
+        }
+
+        $confirmed = !$option->count_to_slots || $event->max_slots - $event->getTakenSlots() >= 1;
+
+        EventRegistration::create([
+            'event_id' => $event->id,
+            'user_id' => $request->user()->id,
+            'confirmed' => $confirmed,
+            'waitlist_priority' => $option->waitlist_priority,
+            'count_to_slots' => $option->count_to_slots,
+        ]);
+
+        ProcessWaitlistForEvent::dispatch($event);
+
+        return redirect()->route('events.show', $event);
+    }
+
+    public function showConfirmForm(Event $event)
+    {
+        if (!Gate::check('confirm', $event)) {
+            return view('generic.message', [
+                'header' => 'Can\'t attend this event',
+                'title' => 'Can\'t attend this event',
+                'message' => 'You are currently to unable to attend this event. There might be multiple reasons for this, such as the event being full, the registration being closed, or some other reason.',
+            ]);
+        }
+
+        return view('events.confirm', [
+            'event' => $event,
+        ]);
+    }
+
+    public function processConfirm(Request $request, Event $event)
+    {
+        if (!Gate::check('confirm', $event)) {
+            return view('generic.message', [
+                'header' => 'Can\'t attend this event',
+                'title' => 'Can\'t attend this event',
+                'message' => 'You are currently to unable to attend this event. There might be multiple reasons for this, such as the event being full, the registration being closed, or some other reason.',
+            ]);
+        }
+
+        EventRegistration::where('user_id', $request->user()->id)
+            ->update([
+                'confirmed' => true,
+                'waitlist_confirmation_required_by' => null,
+            ]);
+
+        ProcessWaitlistForEvent::dispatch($event);
+
+        return redirect()->route('events.show', $event);
     }
 
     public function cancel(Request $request, Event $event)

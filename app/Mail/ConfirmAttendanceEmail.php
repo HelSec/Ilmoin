@@ -4,7 +4,6 @@ namespace App\Mail;
 
 use App\Organizations\Events\EventRegistration;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
@@ -23,6 +22,11 @@ class ConfirmAttendanceEmail extends Mailable
     public function __construct(EventRegistration $registration)
     {
         $this->registration = $registration;
+    }
+
+    protected function buildSubject($message)
+    {
+        return 'Confirm your attendance to ' . $this->registration->event->name;
     }
 
     /**
