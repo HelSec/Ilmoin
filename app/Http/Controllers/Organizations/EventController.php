@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Jobs\ProcessWaitlistForEvent;
 use App\Organizations\Events\Event;
 use App\Organizations\Events\EventRegistration;
+use App\Organizations\Organization;
 use App\Users\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -22,14 +23,14 @@ class EventController extends Controller
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        /** @var User $user */
+        $user = $request->user();
+
+        return view('events.admin.create', [
+            'organizations' => $user->organizations()->filter(fn (Organization $organization) => $user->can('manage', $organization)),
+        ]);
     }
 
     /**
@@ -96,6 +97,7 @@ class EventController extends Controller
                 'header' => 'Can\'t attend this event',
                 'title' => 'Can\'t attend this event',
                 'message' => 'You are currently to unable to attend this event. There might be multiple reasons for this, such as the event being full, the registration being closed, or some other reason.',
+                'showLoginMessage' => true,
             ]);
         }
 
@@ -120,6 +122,7 @@ class EventController extends Controller
                 'header' => 'Can\'t attend this event',
                 'title' => 'Can\'t attend this event',
                 'message' => 'You are currently to unable to attend this event. There might be multiple reasons for this, such as the event being full, the registration being closed, or some other reason.',
+                'showLoginMessage' => true,
             ]);
         }
 
@@ -151,6 +154,7 @@ class EventController extends Controller
                 'header' => 'Can\'t attend this event',
                 'title' => 'Can\'t attend this event',
                 'message' => 'You are currently to unable to attend this event. There might be multiple reasons for this, such as the event being full, the registration being closed, or some other reason.',
+                'showLoginMessage' => true,
             ]);
         }
 
@@ -166,6 +170,7 @@ class EventController extends Controller
                 'header' => 'Can\'t attend this event',
                 'title' => 'Can\'t attend this event',
                 'message' => 'You are currently to unable to attend this event. There might be multiple reasons for this, such as the event being full, the registration being closed, or some other reason.',
+                'showLoginMessage' => true,
             ]);
         }
 
@@ -187,6 +192,7 @@ class EventController extends Controller
                 'header' => 'Can\'t cancel your registration to this event',
                 'title' => 'Can\'t cancel your registration to this event',
                 'message' => 'You are currently to unable to cancel your registration to this event.',
+                'showLoginMessage' => true,
             ]);
         }
 

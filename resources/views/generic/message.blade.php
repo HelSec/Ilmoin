@@ -12,6 +12,12 @@
                 <p>
                     {{ $message }}
                 </p>
+
+                @if(isset($showLoginMessage) && $showLoginMessage && !Auth::check())
+                    <p class="mt-2">
+                        Maybe try <a href="{{ route('login') }}" class="text-blue-700 hover:underline">logging in</a>?
+                    </p>
+                @endif
             </div>
         </div>
     </div>

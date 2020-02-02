@@ -10,7 +10,4 @@ Please confirm your spot by {{ \App\Utils\Date::format($confirm_by) }} at the fo
 Best regards,
 {{ config('app.name', 'Ilmoin') }}
 
-If you wish to no longer receive these messages, opt-out at
-{{ url(route('settings.email')) }}
-
 If you have any questions or feedback, please reply to this email.

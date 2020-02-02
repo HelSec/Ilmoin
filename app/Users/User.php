@@ -28,4 +28,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(OrganizationGroup::class, OrganizationGroupMember::class);
     }
+
+    public function organizations()
+    {
+        return $this->groups()->get()->pluck('organization')->flatten();
+    }
 }

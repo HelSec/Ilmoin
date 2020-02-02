@@ -1,9 +1,18 @@
 module.exports = {
     theme: {
-        extend: {}
+        extend: {},
+        customForms: (theme) => ({
+            default: {
+                'input, checkbox, select': {
+                    backgroundColor: theme('colors.gray.200'),
+                },
+            },
+        }),
     },
     variants: {
         textDecoration: ['responsive', 'hover', 'focus', 'active', 'group-hover'],
     },
-    plugins: []
+    plugins: [
+        require('@tailwindcss/custom-forms'),
+    ]
 };
