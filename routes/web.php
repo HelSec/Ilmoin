@@ -53,4 +53,14 @@ Route::get('user/settings/email', 'User\SettingsController@showEmailSettings')
 Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('events/create', 'Organizations\EventController@create')
         ->name('admin.events.create');
+
+    Route::post('events/create', 'Organizations\EventController@store')
+        ->name('admin.events.store');
+
+    Route::get('events/{event}/edit', 'Organizations\EventController@edit')
+        ->name('admin.events.edit');
+
+    Route::post('events/{event}/edit', 'Organizations\EventController@update')
+        ->name('admin.events.update');
+
 });

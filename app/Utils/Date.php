@@ -8,6 +8,19 @@ use DateTime;
 class Date
 {
     /**
+     * @param $string string
+     * @return Carbon|null
+     */
+    public static function fromString($string)
+    {
+        if ($string === null) {
+            return null;
+        }
+
+        return Carbon::createFromTimeString($string, config('app.timezone'));
+    }
+
+    /**
      * @param $datetime string|DateTime
      * @return string|null
      */
@@ -18,7 +31,7 @@ class Date
         }
 
         if (is_string($datetime)) {
-            $datetime = Carbon::createFromTimeString($datetime, config('app.timezone'));
+            $datetime = self::fromString($datetime);
         }
 
         $carbon = Carbon::instance($datetime)

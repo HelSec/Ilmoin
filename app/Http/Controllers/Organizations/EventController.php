@@ -29,54 +29,83 @@ class EventController extends Controller
         $user = $request->user();
 
         return view('events.admin.create', [
-            'organizations' => $user->organizations()->filter(fn (Organization $organization) => $user->can('manage', $organization)),
+            'organizations' => Organization::all()
+                ->filter(fn (Organization $organization) => $user->can('manage', $organization)),
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        /** @var User $user */
+        $user = $request->user();
+
+        $data = $request->validate([
+            'organization_id' => 'required|exists:organizations,id',
+            'name' => 'required|min:3',
+            'description' => 'required',
+            'date' => 'required|date|after:now',
+            'location' => 'required|min:3',
+            'max_slots' => 'nullable|integer',
+        ]);
+
+        $organization = Organization::findOrFail($data['organization_id']);
+
+        if (!$user->can('manage', $organization)) {
+            abort(403);
+        }
+
+        $event = Event::create($data);
+
+        return redirect()
+            ->route('events.show', $event);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param Event $event
-     * @return \Illuminate\Http\Response
-     */
     public function show(Event $event)
     {
         $event->loadMissing('organization', 'registrationOptions');
         return view('events.view', compact('event'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Event $event
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Event $event)
+    public function edit(Request $request, Event $event)
     {
-        //
+        /** @var User $user */
+        $user = $request->user();
+
+        return view('events.admin.edit', [
+            'event' => $event,
+            'organizations' => Organization::all()
+                ->filter(fn (Organization $organization) => $user->can('manage', $organization)),
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param Event $event
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Event $event)
     {
-        //
+        /** @var User $user */
+        $user = $request->user();
+
+        $data = $request->validate([
+            'organization_id' => 'required|exists:organizations,id',
+            'name' => 'required|min:3',
+            'description' => 'required',
+            'date' => 'required|date|after:now',
+            'location' => 'required|min:3',
+            'max_slots' => 'nullable|integer',
+        ]);
+
+        if (!$data['max_slots']) {
+            $data['max_slots'] = null; // allow clearing it
+        }
+
+        $organization = Organization::findOrFail($data['organization_id']);
+
+        if (!$user->can('manage', $organization)) {
+            abort(403);
+        }
+
+        $event->update($data);
+
+        return redirect()
+            ->route('events.show', $event);
     }
 
     /**
@@ -104,7 +133,7 @@ class EventController extends Controller
         $option = $event->getRegistrationOption($request->user());
 
         if (!$option) {
-            return 'wtf <!-- EventController#showRegistrationForm -->';
+            return 'No options for registration. Either you\'re an admin on Ilmoin, or you\'ve found a bug (<a href="https://github.com/helsec/ilmoin">please report it!</a>) <!-- EventController#showRegistrationForm -->';
         }
 
         $confirmed = !$option->count_to_slots || $event->max_slots - $event->getTakenSlots() >= 1;
@@ -129,7 +158,7 @@ class EventController extends Controller
         $option = $event->getRegistrationOption($request->user());
 
         if (!$option) {
-            return 'wtf <!-- EventController#processRegistration -->';
+            return 'No options for registration. Either you\'re an admin on Ilmoin, or you\'ve found a bug (<a href="https://github.com/helsec/ilmoin">please report it!</a>) <!-- EventController#processRegistration -->';
         }
 
         $confirmed = !$option->count_to_slots || $event->max_slots - $event->getTakenSlots() >= 1;
@@ -199,7 +228,7 @@ class EventController extends Controller
         $registration = $event->registrations()->where('user_id', $request->user()->id)->first();
 
         if (!$registration) {
-            return 'wtf <!-- EventController#cancel -->';
+            return 'No registration found. Either you\'re an admin on Ilmoin, or you\'ve found a bug (<a href="https://github.com/helsec/ilmoin">please report it!</a>) <!-- EventController#cancel -->';
         }
 
         if ($request->isMethod('post')) {
