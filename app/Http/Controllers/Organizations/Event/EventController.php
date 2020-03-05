@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Organizations;
+namespace App\Http\Controllers\Organizations\Event;
 
 use App\Http\Controllers\Controller;
 use App\Jobs\ProcessWaitlistForEvent;
@@ -13,110 +13,10 @@ use Illuminate\Support\Facades\Gate;
 
 class EventController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    public function create(Request $request)
-    {
-        /** @var User $user */
-        $user = $request->user();
-
-        return view('events.admin.create', [
-            'organizations' => Organization::all()
-                ->filter(fn (Organization $organization) => $user->can('manage', $organization)),
-        ]);
-    }
-
-    public function store(Request $request)
-    {
-        /** @var User $user */
-        $user = $request->user();
-
-        $data = $request->validate([
-            'organization_id' => 'required|exists:organizations,id',
-            'name' => 'required|min:3',
-            'description' => 'required',
-            'date' => 'required|date|after:now',
-            'location' => 'required|min:3',
-            'max_slots' => 'nullable|integer',
-        ]);
-
-        $organization = Organization::findOrFail($data['organization_id']);
-
-        if (!$user->can('manage', $organization)) {
-            abort(403);
-        }
-
-        $event = Event::create($data);
-
-        return redirect()
-            ->route('events.show', $event);
-    }
-
     public function show(Event $event)
     {
         $event->loadMissing('organization', 'registrationOptions');
         return view('events.view', compact('event'));
-    }
-
-    public function edit(Request $request, Event $event)
-    {
-        /** @var User $user */
-        $user = $request->user();
-
-        return view('events.admin.edit', [
-            'event' => $event,
-            'organizations' => Organization::all()
-                ->filter(fn (Organization $organization) => $user->can('manage', $organization)),
-        ]);
-    }
-
-    public function update(Request $request, Event $event)
-    {
-        /** @var User $user */
-        $user = $request->user();
-
-        $data = $request->validate([
-            'organization_id' => 'required|exists:organizations,id',
-            'name' => 'required|min:3',
-            'description' => 'required',
-            'date' => 'required|date|after:now',
-            'location' => 'required|min:3',
-            'max_slots' => 'nullable|integer',
-        ]);
-
-        if (!$data['max_slots']) {
-            $data['max_slots'] = null; // allow clearing it
-        }
-
-        $organization = Organization::findOrFail($data['organization_id']);
-
-        if (!$user->can('manage', $organization)) {
-            abort(403);
-        }
-
-        $event->update($data);
-
-        return redirect()
-            ->route('events.show', $event);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Event $event
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Event $event)
-    {
-        //
     }
 
     public function showRegistrationForm(Request $request, Event $event)

@@ -3,7 +3,7 @@ module.exports = {
         extend: {},
         customForms: (theme) => ({
             default: {
-                'input, checkbox, select, textarea': {
+                'input, textarea, checkbox, radio, select': {
                     backgroundColor: theme('colors.gray.200'),
                 },
             },

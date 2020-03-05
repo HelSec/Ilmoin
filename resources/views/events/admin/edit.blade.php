@@ -3,6 +3,10 @@
 @section('title', 'Create event')
 
 @section('content')
+    <a href="{{ route('events.show', $event) }}" class="font-bold text-blue-700 hover:underline">
+        « Go Back
+    </a>
+
     <form class="card" action="{{ route('admin.events.update', $event) }}" method="post">
         @csrf
         <div class="flex">
@@ -113,4 +117,23 @@
             </div>
         </div>
     </form>
+
+    <div class="card">
+        <div class="flex">
+            <div class="w-full">
+                <div class="md:flex md:justify-between">
+                    <div class="font-bold text-2xl mb-2">
+                        Registration options
+                    </div>
+
+                    <div>
+                        <a href="{{ route('admin.events.regopts.create', $event) }}" class="button-pink mr-2">
+                            Add
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
 @endsection
