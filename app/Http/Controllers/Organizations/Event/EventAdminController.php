@@ -107,6 +107,7 @@ class EventAdminController extends Controller
         $user = $request->user();
 
         abort_unless($user->can('manage', $event), 403);
+        $event->loadMissing('organization.groups');
 
         return view('events.admin.regopts.create', [
             'event' => $event,

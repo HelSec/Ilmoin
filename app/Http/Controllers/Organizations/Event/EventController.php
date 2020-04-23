@@ -25,7 +25,7 @@ class EventController extends Controller
             return view('generic.message', [
                 'header' => 'Can\'t attend this event',
                 'title' => 'Can\'t attend this event',
-                'message' => 'You are currently to unable to attend this event. There might be multiple reasons for this, such as the event being full, the registration being closed, or some other reason.',
+                'message' => 'You are currently unable to to attend this event. There might be multiple reasons for this, such as the event being full, the registration being closed, or some other reason.',
                 'showLoginMessage' => true,
             ]);
         }
@@ -50,7 +50,7 @@ class EventController extends Controller
             return view('generic.message', [
                 'header' => 'Can\'t attend this event',
                 'title' => 'Can\'t attend this event',
-                'message' => 'You are currently to unable to attend this event. There might be multiple reasons for this, such as the event being full, the registration being closed, or some other reason.',
+                'message' => 'You are currently unable to to attend this event. There might be multiple reasons for this, such as the event being full, the registration being closed, or some other reason.',
                 'showLoginMessage' => true,
             ]);
         }
@@ -82,7 +82,7 @@ class EventController extends Controller
             return view('generic.message', [
                 'header' => 'Can\'t attend this event',
                 'title' => 'Can\'t attend this event',
-                'message' => 'You are currently to unable to attend this event. There might be multiple reasons for this, such as the event being full, the registration being closed, or some other reason.',
+                'message' => 'You are currently unable to to attend this event. There might be multiple reasons for this, such as the event being full, the registration being closed, or some other reason.',
                 'showLoginMessage' => true,
             ]);
         }
@@ -98,7 +98,7 @@ class EventController extends Controller
             return view('generic.message', [
                 'header' => 'Can\'t attend this event',
                 'title' => 'Can\'t attend this event',
-                'message' => 'You are currently to unable to attend this event. There might be multiple reasons for this, such as the event being full, the registration being closed, or some other reason.',
+                'message' => 'You are currently unable to to attend this event. There might be multiple reasons for this, such as the event being full, the registration being closed, or some other reason.',
                 'showLoginMessage' => true,
             ]);
         }
@@ -114,13 +114,13 @@ class EventController extends Controller
         return redirect()->route('events.show', $event);
     }
 
-    public function cancel(Request $request, Event $event)
+    public function showCancelForm(Request $request, Event $event)
     {
         if (!Gate::check('cancel', $event)) {
             return view('generic.message', [
                 'header' => 'Can\'t cancel your registration to this event',
                 'title' => 'Can\'t cancel your registration to this event',
-                'message' => 'You are currently to unable to cancel your registration to this event.',
+                'message' => 'You are currently unable to to cancel your registration to this event.',
                 'showLoginMessage' => true,
             ]);
         }
@@ -131,17 +131,32 @@ class EventController extends Controller
             return 'No registration found. Either you\'re an admin on Ilmoin, or you\'ve found a bug (<a href="https://github.com/helsec/ilmoin">please report it!</a>) <!-- EventController#cancel -->';
         }
 
-        if ($request->isMethod('post')) {
-            $registration->delete();
-
-            ProcessWaitlistForEvent::dispatch($event);
-
-            return redirect()->route('events.show', $event);
-        }
-
         return view('events.cancel', [
             'event' => $event,
             'registration' => $registration,
         ]);
+    }
+
+    public function processCancel(Request $request, Event $event) {
+        if (!Gate::check('cancel', $event)) {
+            return view('generic.message', [
+                'header' => 'Can\'t cancel your registration to this event',
+                'title' => 'Can\'t cancel your registration to this event',
+                'message' => 'You are currently unable to to cancel your registration to this event.',
+                'showLoginMessage' => true,
+            ]);
+        }
+
+        $registration = $event->registrations()->where('user_id', $request->user()->id)->first();
+
+        if (!$registration) {
+            return 'No registration found. Either you\'re an admin on Ilmoin, or you\'ve found a bug (<a href="https://github.com/helsec/ilmoin">please report it!</a>) <!-- EventController#cancel -->';
+        }
+
+        $registration->delete();
+
+        ProcessWaitlistForEvent::dispatch($event);
+
+        return redirect()->route('events.show', $event);
     }
 }

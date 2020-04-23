@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Create event')
+@section('title', 'Create event registration option')
 
 @section('content')
     <a href="{{ route('admin.events.edit', $event) }}" class="font-bold text-blue-700 hover:underline">
@@ -105,7 +105,7 @@
         <div class="mt-6 md:flex">
             <div class="md:w-1/3">
                 <div class="font-semibold text-black mb-2">Count to slots</div>
-                <div class="text-gray-700 text-sm">If no, people who registered with this option do not count to max slots.</div>
+                <div class="text-gray-700 text-sm">If disabled, people who registered with this option do not count to max slots.</div>
             </div>
 
             <div class="md:w-2/3">
@@ -116,6 +116,22 @@
                 <label class="block">
                     <input type="radio" class="form-radio" name="count_to_slots" value="0" {{ !old('count_to_slots', true) ? 'checked' : '' }}> No
                 </label>
+            </div>
+        </div>
+
+        <div class="mt-6 md:flex">
+            <div class="md:w-1/3">
+                <div class="font-semibold text-black mb-2">Groups</div>
+                <div class="text-gray-700 text-sm">Restrict this option to members of the specified groups only. If none are selected, this option is available to everybody.</div>
+            </div>
+
+            <div class="md:w-2/3">
+                @foreach($event->organization->groups as $group)
+                    <label class="block">
+                        <input type="checkbox" class="form-checkbox" name="groups[]" value="{{ $group->id }}" {{ in_array($group->id, old('groups', [])) ? 'checked' : '' }}>
+                        {{ $group->name }}
+                    </label>
+                @endforeach
             </div>
         </div>
 

@@ -12,6 +12,13 @@
         @endif
         {{ config('app.name', 'Ilmoin') }}</title>
 
+    <script>
+        window.Ilmoin = {
+            basePath: '{{ url(route('home')) }}',
+            api: {},
+        };
+    </script>
+
     <link rel="stylesheet"
           href="https://use.fontawesome.com/releases/v5.11.2/css/all.css"
           crossorigin="anonymous">

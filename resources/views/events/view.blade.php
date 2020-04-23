@@ -66,43 +66,6 @@
         </div>
     </div>
 
-    @can('manage', $event)
-        <div class="card">
-            <div class="flex">
-                <div>
-                    <div class="font-bold text-xl mb-2">
-                        Event Configuration
-                    </div>
-
-                    <div>
-                        @if($event->registrationOptions->isEmpty())
-                            No event registration options configured.
-                        @else
-                            <ul class="list-disc ml-6">
-                                @foreach($event->registrationOptions as $option)
-                                    <li>
-                                        (config#{{ $option->id }} with priority {{ $option->priority }}) Users
-                                        @if($option->groupRequirements->isNotEmpty())
-                                            in groups [
-                                            @foreach($option->groupRequirements as $group)
-                                                <a href="{{ route('groups.show', $group) }}" class="hover:underline"><span class="font-bold">{{ $group->name }}</span> (ID {{ $group->id }})</a>{{ $loop->last ? '' : ';' }}
-                                            @endforeach
-                                            ]
-                                        @endif
-                                        are able to register between {{ \App\Utils\Date::format($option->opens_at) }} and {{ \App\Utils\Date::format($option->closes_at) }}. They have waitlist priority of {{ $option->waitlist_priority }}.
-                                        @if(!$option->count_to_slots)
-                                            They do not count towards the slot limit.
-                                        @endif
-                                    </li>
-                                @endforeach
-                            </ul>
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endif
-
     <div class="card">
         {{ json_encode($event->registrations) }}
     </div>

@@ -1,1 +1,7 @@
-// empty for now (y u no need js)
+import ky from 'ky';
+import 'alpinejs';
+
+window.ky = ky;
+window.Ilmoin.api = {
+
+};
