@@ -10,6 +10,7 @@ use App\Organizations\Organization;
 use App\Users\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use App\Organizations\Events\EventRegistrationOptionRequiredGroup;
 
 class EventAdminController extends Controller
 {
@@ -40,9 +41,7 @@ class EventAdminController extends Controller
 
         $organization = Organization::findOrFail($data['organization_id']);
 
-        if (!$user->can('manage', $organization)) {
-            abort(403);
-        }
+        $this->authorize('manage', $organization);
 
         $event = Event::create($data);
 
@@ -55,7 +54,7 @@ class EventAdminController extends Controller
         /** @var User $user */
         $user = $request->user();
 
-        abort_unless($user->can('manage', $event), 403);
+        $this->authorize('manage', $event);
 
         return view('events.admin.edit', [
             'event' => $event,
@@ -69,7 +68,7 @@ class EventAdminController extends Controller
         /** @var User $user */
         $user = $request->user();
 
-        abort_unless($user->can('manage', $event), 403);
+        $this->authorize('manage', $event);
 
         $data = $request->validate([
             'organization_id' => 'required|exists:organizations,id',
@@ -86,9 +85,7 @@ class EventAdminController extends Controller
 
         $organization = Organization::findOrFail($data['organization_id']);
 
-        if (!$user->can('manage', $organization)) {
-            abort(403);
-        }
+        $this->authorize('manage', $organization);
 
         $event->update($data);
 
@@ -106,7 +103,7 @@ class EventAdminController extends Controller
         /** @var User $user */
         $user = $request->user();
 
-        abort_unless($user->can('manage', $event), 403);
+        $this->authorize('manage', $event);
         $event->loadMissing('organization.groups');
 
         return view('events.admin.regopts.create', [
@@ -119,7 +116,7 @@ class EventAdminController extends Controller
         /** @var User $user */
         $user = $request->user();
 
-        abort_unless($user->can('manage', $event), 403);
+        $this->authorize('manage', $event);
 
         $data = $request->validate([
             'priority' => [
@@ -135,7 +132,14 @@ class EventAdminController extends Controller
 
         $data['event_id'] = $event->id;
 
-        EventRegistrationOption::create($data);
+        $option = EventRegistrationOption::create($data);
+
+        collect($request->input('groups'))
+            ->map(fn($string) => [
+                'event_registration_option_id' => $option->id,
+                'organization_group_id' => intval($string)
+            ])
+            ->each(fn($array) => EventRegistrationOptionRequiredGroup::create($array));
 
         return redirect()
             ->route('admin.events.edit', $event);
