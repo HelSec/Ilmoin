@@ -19,131 +19,43 @@
             </div>
         </div>
 
-        <label class="mt-6 block md:flex">
-            <div class="md:w-1/3">
-                <div class="font-semibold text-black mb-2">Event</div>
-                <div class="text-gray-700 text-sm">The thing that you're creating the registration option for</div>
-            </div>
+        <x-forms.field title="Event" description="The thing that you're creating the registration option for">
+            <x-forms.input-text name="event" disabled :value="$event->name"/>
+        </x-forms.field>
 
-            <div class="md:w-2/3">
-                <input type="text" name="event" class="form-input w-full bg-gray-300 cursor-not-allowed" disabled value="{{ $event->name }}">
-            </div>
-        </label>
+        <x-forms.field title="Priority" description="Unique in the event. Larger priority options are used first." class="mt-4">
+            <x-forms.input-text name="priority" type="number" :value="old('priority')"/>
+        </x-forms.field>
 
-        <label class="mt-6 block md:flex">
-            <div class="md:w-1/3">
-                <div class="font-semibold text-black mb-2">Priority</div>
-                <div class="text-gray-700 text-sm">Unique in the event. Larger priority options are used first.</div>
-            </div>
+        <x-forms.field title="Opens at" description="This option will not be working before this time." class="mt-4">
+            <x-forms.input-text name="opens_at" type="datetime_local" :value="old('opens_at')"/>
+            <x-forms.datetime-local-notice/>
+        </x-forms.field>
 
-            <div class="md:w-2/3">
-                <input type="number" name="priority" class="form-input w-full" value="{{ old('priority') }}">
-            </div>
-        </label>
+        <x-forms.field title="Closes at" description="This option will not be working after this time." class="mt-4">
+            <x-forms.input-text name="closes_at" type="datetime_local" :value="old('closes_at')"/>
+            <x-forms.datetime-local-notice/>
+        </x-forms.field>
 
-        <label class="mt-6 block md:flex">
-            <div class="md:w-1/3">
-                <div class="font-semibold text-black mb-2">Opens at</div>
-                <div class="text-gray-700 text-sm">This option will not be working before this time.</div>
-            </div>
+        <x-forms.field title="Waitlist priority" description="Larger values get higher priority when selecting people from waitlist." class="mt-4">
+            <x-forms.input-text name="waitlist_priority" type="number" :value="old('waitlist_priority')"/>
+        </x-forms.field>
 
-            <div class="md:w-2/3">
-                <div>
-                    <input type="datetime-local" name="opens_at" class="form-input w-full"
-                           required value="{{ old('opens_at') }}">
-                </div>
+        <x-forms.field element="div" title="Count to slots" description="If disabled, people who registered with this option do not count to max slots." class="mt-4">
+            <x-forms.yes-no-buttons name="count_to_slots" :value="old('count_to_slots', true)" />
+        </x-forms.field>
 
-                <p class="text-gray-700">
-                    If your browser does not support
-                    <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-local" class="text-blue-700 underline hover:no-underline"><code>
-                            &lt;input type="datetime-local"&gt;</code></a>,
-                    please use format
-                    <code>
-                        YYYY-MM-DD<span class="text-blue-500">T</span>HH:MM</code>.
-
-                    Current timezone is <span>{{ config('app.timezone') }}</span>.
-                </p>
-            </div>
-        </label>
-
-        <label class="mt-6 block md:flex">
-            <div class="md:w-1/3">
-                <div class="font-semibold text-black mb-2">Closes at</div>
-                <div class="text-gray-700 text-sm">This option will not be working before this time.</div>
-            </div>
-
-            <div class="md:w-2/3">
-                <div>
-                    <input type="datetime-local" name="closes_at" class="form-input w-full"
-                           required value="{{ old('closes_at') }}">
-                </div>
-
-                <p class="text-gray-700">
-                    If your browser does not support
-                    <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-local" class="text-blue-700 underline hover:no-underline"><code>
-                            &lt;input type="datetime-local"&gt;</code></a>,
-                    please use format
-                    <code>
-                        YYYY-MM-DD<span class="text-blue-500">T</span>HH:MM</code>.
-
-                    Current timezone is <span>{{ config('app.timezone') }}</span>.
-                </p>
-            </div>
-        </label>
-
-        <label class="mt-6 block md:flex">
-            <div class="md:w-1/3">
-                <div class="font-semibold text-black mb-2">Waitlist priority</div>
-                <div class="text-gray-700 text-sm">Larger values get higher priority when selecting people from waitlist.</div>
-            </div>
-
-            <div class="md:w-2/3">
-                <input type="number" name="waitlist_priority" class="form-input w-full" value="{{ old('waitlist_priority') }}">
-            </div>
-        </label>
-
-        <div class="mt-6 md:flex">
-            <div class="md:w-1/3">
-                <div class="font-semibold text-black mb-2">Count to slots</div>
-                <div class="text-gray-700 text-sm">If disabled, people who registered with this option do not count to max slots.</div>
-            </div>
-
-            <div class="md:w-2/3">
+        <x-forms.field element="div" title="Groups" description="Restrict this option to members of the specified groups only. If none are selected, this option is available to everybody." class="mt-4">
+            @foreach($event->organization->groups as $group)
                 <label class="block">
-                    <input type="radio" class="form-radio" name="count_to_slots" value="1" {{ old('count_to_slots', true) ? 'checked' : '' }}> Yes
+                    <input type="checkbox" class="form-checkbox" name="groups[]" value="{{ $group->id }}" {{ in_array($group->id, old('groups', [])) ? 'checked' : '' }}>
+                    {{ $group->name }}
                 </label>
+            @endforeach
+        </x-forms.field>
 
-                <label class="block">
-                    <input type="radio" class="form-radio" name="count_to_slots" value="0" {{ !old('count_to_slots', true) ? 'checked' : '' }}> No
-                </label>
-            </div>
-        </div>
-
-        <div class="mt-6 md:flex">
-            <div class="md:w-1/3">
-                <div class="font-semibold text-black mb-2">Groups</div>
-                <div class="text-gray-700 text-sm">Restrict this option to members of the specified groups only. If none are selected, this option is available to everybody.</div>
-            </div>
-
-            <div class="md:w-2/3">
-                @foreach($event->organization->groups as $group)
-                    <label class="block">
-                        <input type="checkbox" class="form-checkbox" name="groups[]" value="{{ $group->id }}" {{ in_array($group->id, old('groups', [])) ? 'checked' : '' }}>
-                        {{ $group->name }}
-                    </label>
-                @endforeach
-            </div>
-        </div>
-
-        <div class="mt-6 md:flex">
-            <div class="md:w-1/3">
-                <div class="font-semibold text-black mb-2">Save</div>
-                <div class="text-gray-700 text-sm">Creates the registration option</div>
-            </div>
-
-            <div class="md:w-2/3">
-                <button type="submit" class="button-pink">Save</button>
-            </div>
-        </div>
+        <x-forms.field title="Save" description="Creates the registration option." class="mt-4">
+            <button type="submit" class="button-pink">Save</button>
+        </x-forms.field>
     </form>
 @endsection
