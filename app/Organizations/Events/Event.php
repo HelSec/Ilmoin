@@ -34,12 +34,14 @@ class Event extends Model
      */
     public function getRegistrationOption(User $user): ?EventRegistrationOption
     {
-        $this->loadMissing('organization.groups', 'registrationOptions');
+        $this->loadMissing('organization.groups', 'registrationOptions', 'registrationOptions.groupRequirements');
         $now = now();
         foreach ($this->registrationOptions as $option) {
-            if ($option->opens_at->isBefore($now)
+            if ($option->enabled
+                && $option->opens_at->isBefore($now)
                 && $option->closes_at->isAfter($now)
-                && $option->groupRequirements->filter(fn (OrganizationGroup $group) => !$group->hasMember($user))->isEmpty()) {
+                && ($option->groupRequirements->isEmpty()
+                    || $option->groupRequirements->filter(fn (OrganizationGroup $group) => $group->hasMember($user))->isNotEmpty())) {
                 return $option;
             }
         }

@@ -12,6 +12,7 @@ class EventRegistrationOption extends Model
 
     protected $casts = [
         'count_to_slots' => 'boolean',
+        'enabled' => 'boolean',
     ];
 
     protected $dates = [

@@ -65,9 +65,6 @@ class EventAdminController extends Controller
 
     public function update(Request $request, Event $event)
     {
-        /** @var User $user */
-        $user = $request->user();
-
         $this->authorize('manage', $event);
 
         $data = $request->validate([
@@ -84,7 +81,6 @@ class EventAdminController extends Controller
         }
 
         $organization = Organization::findOrFail($data['organization_id']);
-
         $this->authorize('manage', $organization);
 
         $event->update($data);
