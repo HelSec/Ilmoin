@@ -124,6 +124,7 @@ class EventAdminController extends Controller
             'closes_at' => 'required|date|after:now',
             'waitlist_priority' => 'required|integer',
             'count_to_slots' => 'required|boolean',
+            'enabled' => 'required|boolean',
         ]);
 
         $data['event_id'] = $event->id;
@@ -139,5 +140,21 @@ class EventAdminController extends Controller
 
         return redirect()
             ->route('admin.events.edit', $event);
+    }
+
+    public function editRegistrationOption(Request $request, EventRegistrationOption $option)
+    {
+        $this->authorize('manage', $option->event);
+
+        return view('events.admin.regopts.edit', [
+            'event' => $option->event,
+            'option' => $option,
+            'groups' => $option->groupRequirements()->pluck('organization_group_id')->toArray(),
+        ]);
+    }
+
+    public function updateRegistrationOption(Request $request, EventRegistrationOption $option)
+    {
+
     }
 }

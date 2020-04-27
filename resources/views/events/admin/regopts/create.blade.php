@@ -23,6 +23,10 @@
             <x-forms.input-text name="event" disabled :value="$event->name"/>
         </x-forms.field>
 
+        <x-forms.field element="div" title="Enabled" description="" class="mt-4">
+            <x-forms.yes-no-buttons name="enabled" :value="old('enabled', true)" />
+        </x-forms.field>
+
         <x-forms.field title="Priority" description="Unique in the event. Larger priority options are used first." class="mt-4">
             <x-forms.input-text name="priority" type="number" :value="old('priority')"/>
         </x-forms.field>

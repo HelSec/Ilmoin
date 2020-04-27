@@ -43,10 +43,12 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('events/create', 'Organizations\Event\EventAdminController@create')->name('admin.events.create');
     Route::post('events/create', 'Organizations\Event\EventAdminController@store')->name('admin.events.store');
 
-    Route::get('events/{event}/edit', 'Organizations\Event\EventAdminController@edit')->name('admin.events.edit');
-    Route::post('events/{event}/edit', 'Organizations\Event\EventAdminController@update')->name('admin.events.update');
+    Route::get('events/edit/{event}', 'Organizations\Event\EventAdminController@edit')->name('admin.events.edit');
+    Route::post('events/edit/{event}', 'Organizations\Event\EventAdminController@update')->name('admin.events.update');
 
-    Route::get('events/{event}/regopts/create', 'Organizations\Event\EventAdminController@createRegistrationOption')->name('admin.events.regopts.create');
-    Route::post('events/{event}/regopts/create', 'Organizations\Event\EventAdminController@storeRegistrationOption')->name('admin.events.regopts.store');
+    Route::get('events/regopts/create/{event}', 'Organizations\Event\EventAdminController@createRegistrationOption')->name('admin.events.regopts.create');
+    Route::post('events/regopts/create/{event}', 'Organizations\Event\EventAdminController@storeRegistrationOption')->name('admin.events.regopts.store');
 
+    Route::get('events/regopts/edit/{option}', 'Organizations\Event\EventAdminController@editRegistrationOption')->name('admin.events.regopts.edit');
+    Route::post('events/regopts/edit/{option}', 'Organizations\Event\EventAdminController@updateRegistrationOption')->name('admin.events.regopts.update');
 });

@@ -152,6 +152,12 @@
                                     @if(!$option->count_to_slots)
                                         They do not count towards the slot limit.
                                     @endif
+                                    @if(!$option->enabled)
+                                        This option is disabled.
+                                    @endif
+
+                                    [<a href="{{ route('admin.events.regopts.edit', $option) }}" class="hover:underline text-black"
+                                        >edit</a>]
                                 </li>
                             @endforeach
                         </ul>
