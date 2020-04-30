@@ -58,7 +58,7 @@
             @endforeach
         </x-forms.field>
 
-        <x-forms.field title="Save" description="Creates the registration option." class="mt-4">
+        <x-forms.field element="div" title="Save" description="Creates the registration option." class="mt-4">
             <button type="submit" class="button-pink">Save</button>
         </x-forms.field>
     </form>

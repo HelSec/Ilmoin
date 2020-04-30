@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Organizations\Event;
 
 use App\Http\Controllers\Controller;
 use App\Organizations\Events\Event;
+use Composer\DependencyResolver\Transaction;
 use App\Organizations\Events\EventRegistration;
 use App\Organizations\Events\EventRegistrationOption;
 use App\Organizations\Organization;
@@ -155,6 +156,36 @@ class EventAdminController extends Controller
 
     public function updateRegistrationOption(Request $request, EventRegistrationOption $option)
     {
+        $event = $option->event;
+        $this->authorize('manage', $event);
 
+        $data = $request->validate([
+            'priority' => [
+                'required',
+                'integer',
+                Rule::unique('event_registration_options', 'priority')
+                    ->where('event_id', $event->id)->whereNot('id', $option->id)
+            ],
+            'opens_at' => 'required|date',
+            'closes_at' => 'required|date',
+            'waitlist_priority' => 'required|integer',
+            'count_to_slots' => 'required|boolean',
+            'enabled' => 'required|boolean',
+        ]);
+
+        $groups = collect($request->input('groups'))->map(fn($string) => intval($string));
+        EventRegistrationOptionRequiredGroup::where('event_registration_option_id', $option->id)
+            ->whereNotIn('organization_group_id', $groups->toArray())
+            ->delete();
+
+        $groups->map(fn($id) => [
+            'event_registration_option_id' => $option->id,
+            'organization_group_id' => $id
+        ])
+            ->each(fn($entry) => EventRegistrationOptionRequiredGroup::firstOrCreate($entry, $entry));
+
+        $option->update($data);
+        return redirect()
+            ->route('admin.events.edit', $event);
     }
 }

@@ -27,6 +27,7 @@ class EventRegistrationOption extends Model
 
     public function groupRequirements()
     {
-        return $this->belongsToMany(OrganizationGroup::class, EventRegistrationOptionRequiredGroup::class);
+        return $this->belongsToMany(OrganizationGroup::class, EventRegistrationOptionRequiredGroup::class)
+            ->orderBy('event_registration_option_required_groups.organization_group_id');
     }
 }
