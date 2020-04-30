@@ -23,8 +23,19 @@
 
     @if($organization->upcomingEvents->isNotEmpty())
         <div class="mt-6">
-            <div class="font-bold text-xl mb-2">
-                Upcoming events
+            <div>
+                <div class="md:flex md:justify-between w-full">
+                    <div class="font-bold text-xl mb-2">
+                        Upcoming events
+                    </div>
+                    <div>
+                        @can('manage', $organization)
+                            <a href="{{ route('admin.events.create', ['organization' => $organization->id]) }}" class="button-pink mr-2">
+                                Create event
+                            </a>
+                        @endcan
+                    </div>
+                </div>
             </div>
 
             @foreach($organization->upcomingEvents as $event)
@@ -67,6 +78,20 @@
                     </div>
                 </div>
             @endforeach
+        </div>
+    @else
+        <div class="mt-6">
+            <div class="font-bold text-xl mb-2">
+                Upcoming events
+            </div>
+
+            <div>
+                @can('manage', $organization)
+                    <a href="{{ route('admin.events.create', ['organization' => $organization->id]) }}" class="button-pink mr-2">
+                        Create event
+                    </a>
+                @endcan
+            </div>
         </div>
     @endif
 
