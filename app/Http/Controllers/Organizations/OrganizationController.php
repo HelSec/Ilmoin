@@ -21,27 +21,6 @@ class OrganizationController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param  \App\Organizations\Organization  $organization
@@ -51,39 +30,5 @@ class OrganizationController extends Controller
     {
         $organization->loadMissing('upcomingEvents', 'pastEvents', 'groups', 'groups.members', 'groups.organization', 'adminGroup');
         return view('organizations.view', compact('organization'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Organizations\Organization  $organization
-     * @return Response
-     */
-    public function edit(Organization $organization)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Organizations\Organization  $organization
-     * @return Response
-     */
-    public function update(Request $request, Organization $organization)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Organizations\Organization  $organization
-     * @return Response
-     */
-    public function destroy(Organization $organization)
-    {
-        //
     }
 }

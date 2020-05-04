@@ -28,9 +28,6 @@ class EventAdminController extends Controller
 
     public function store(Request $request)
     {
-        /** @var User $user */
-        $user = $request->user();
-
         $data = $request->validate([
             'organization_id' => 'required|exists:organizations,id',
             'name' => 'required|min:3',

@@ -24,4 +24,9 @@ class OrganizationGroupPolicy
     {
         return $group->is_member_list_public || ($user ? ($group->is_member_list_shown_to_other_members && $group->hasMember($user)) || $user->can('manage', $group->organization) : false);
     }
+
+    public function manage(User $user, OrganizationGroup $group)
+    {
+        return $user->can('manage', $group->organization);
+    }
 }

@@ -5,9 +5,21 @@
 @section('content')
     <div class="card">
         <div class="flex">
-            <div>
-                <div class="font-bold text-2xl mb-2">
-                    {{ $group->name }}
+            <div class="w-full">
+                <div class="md:flex md:justify-between w-full">
+                    <div class="font-bold text-2xl mb-2">
+                        {{ $group->name }}
+                    </div>
+
+                    <div>
+                        @auth
+                            @can('manage', $group)
+                                <a href="{{ route('admin.groups.edit', $group) }}" class="button-pink mr-2">
+                                    Edit group
+                                </a>
+                            @endcan
+                        @endif
+                    </div>
                 </div>
 
                 <div class="text-gray-800 my-2">
