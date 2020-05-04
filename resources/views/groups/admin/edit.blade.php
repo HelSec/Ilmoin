@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Edit event registration option')
+@section('title', 'Edit group')
 
 @section('content')
     <a href="{{ route('groups.show', $group) }}" class="font-bold text-blue-700 hover:underline">
@@ -13,14 +13,14 @@
             <div>
                 <div class="md:flex md:justify-between">
                     <div class="font-bold text-2xl mb-2">
-                        Edit event registration option
+                        Edit group
                     </div>
                 </div>
             </div>
         </div>
 
         <x-forms.field title="Name" description="The name of the group">
-            <x-forms.input-text name="name" :value="$group->name"/>
+            <x-forms.input-text name="name" :value="old('name', $group->name)"/>
         </x-forms.field>
 
         <x-forms.field title="Description" description="Ths" class="mt-4">
@@ -39,7 +39,7 @@
             <x-forms.yes-no-buttons name="is_member_list_shown_to_other_members" :value="old('is_member_list_shown_to_other_members', $group->is_member_list_shown_to_other_members)" />
         </x-forms.field>
 
-        <x-forms.field element="div" title="Save" description="Creates the registration option." class="mt-4">
+        <x-forms.field element="div" title="Save" description="Saves all changes to the database." class="mt-4">
             <button type="submit" class="button-pink">Save</button>
         </x-forms.field>
     </form>

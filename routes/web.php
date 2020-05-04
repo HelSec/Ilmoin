@@ -40,6 +40,9 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::prefix('admin')->middleware('auth')->group(function () {
+    Route::get('groups/create', 'Organizations\OrganizationGroupAdminController@create')->name('admin.groups.create');
+    Route::post('groups/create', 'Organizations\OrganizationGroupAdminController@store')->name('admin.groups.store');
+
     Route::get('groups/edit/{group}', 'Organizations\OrganizationGroupAdminController@edit')->name('admin.groups.edit');
     Route::post('groups/edit/{group}', 'Organizations\OrganizationGroupAdminController@update')->name('admin.groups.update');
 
