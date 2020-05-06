@@ -24,6 +24,10 @@ class User extends Authenticatable
         'is_super_admin' => 'boolean',
     ];
 
+    protected $appends = [
+        'viewUrl',
+    ];
+
     public function groups()
     {
         return $this->belongsToMany(OrganizationGroup::class, OrganizationGroupMember::class);
@@ -32,5 +36,10 @@ class User extends Authenticatable
     public function organizations()
     {
         return $this->groups()->get()->pluck('organization')->flatten();
+    }
+
+    public function getViewUrlAttribute()
+    {
+        return '/';
     }
 }

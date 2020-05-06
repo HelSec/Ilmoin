@@ -6,9 +6,21 @@ use App\Organizations\Organization;
 use App\Organizations\OrganizationGroup;
 use App\Users\User;
 use Illuminate\Database\Eloquent\Model;
+use App\Activity\SavesActivityAsLogEntries;
 
 class Event extends Model
 {
+    use SavesActivityAsLogEntries;
+
+    public $fieldToModelTypes = [
+        'organization_id' => [Organization::class, 'id'],
+    ];
+
+    public function getFieldNameTranslationPrefix()
+    {
+        return 'events.fields.';
+    }
+
     protected $guarded = [];
 
     public function organization()
