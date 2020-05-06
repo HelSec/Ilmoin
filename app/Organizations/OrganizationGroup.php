@@ -10,6 +10,7 @@ use Spatie\Sluggable\SlugOptions;
 class OrganizationGroup extends Model
 {
     protected $guarded = [];
+    protected $appends = ['view_url'];
 
     protected $casts = [
         'is_public' => 'boolean',
@@ -44,5 +45,10 @@ class OrganizationGroup extends Model
     public function hasMember(User $user)
     {
         return $this->members->contains('id', $user->id);
+    }
+
+    public function getViewUrlAttribute()
+    {
+        return route('groups.show', $this);
     }
 }
