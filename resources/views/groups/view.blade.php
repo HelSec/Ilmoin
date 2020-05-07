@@ -14,6 +14,10 @@
                     <div>
                         @auth
                             @can('manage', $group)
+                                <a href="{{ route('admin.group.invites.create', ['group' => $group->id]) }}" class="button-pink mr-2">
+                                    Invite people
+                                </a>
+
                                 <a href="{{ route('admin.groups.edit', $group) }}" class="button-pink mr-2">
                                     Edit group
                                 </a>

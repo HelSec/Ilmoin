@@ -11,6 +11,7 @@ use Spatie\Sluggable\SlugOptions;
 class Organization extends Model
 {
     protected $guarded = [];
+    protected $appends = ['view_url'];
 
     use HasSlug;
     use HasImageUploads;
@@ -66,4 +67,9 @@ class Organization extends Model
             'placeholder' => '/storage/placeholders/64.png',
         ]
     ];
+
+    public function getViewUrlAttribute()
+    {
+        return route('organizations.show', $this);
+    }
 }

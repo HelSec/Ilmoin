@@ -5,6 +5,7 @@ namespace App\Users;
 use App\Organizations\OrganizationGroup;
 use App\Organizations\OrganizationGroupMember;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Organizations\OrganizationGroupInvite;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -24,6 +25,10 @@ class User extends Authenticatable
         'is_super_admin' => 'boolean',
     ];
 
+    protected $appends = [
+        'viewUrl',
+    ];
+
     public function groups()
     {
         return $this->belongsToMany(OrganizationGroup::class, OrganizationGroupMember::class);
@@ -32,5 +37,15 @@ class User extends Authenticatable
     public function organizations()
     {
         return $this->groups()->get()->pluck('organization')->flatten();
+    }
+
+    public function groupInvites()
+    {
+        return $this->hasMany(OrganizationGroupInvite::class, 'user_id');
+    }
+
+    public function getViewUrlAttribute()
+    {
+        return '/';
     }
 }

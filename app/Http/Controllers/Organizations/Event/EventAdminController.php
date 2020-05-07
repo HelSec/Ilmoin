@@ -170,16 +170,25 @@ class EventAdminController extends Controller
             'enabled' => 'required|boolean',
         ]);
 
+        $oldGroupIds = $option->groupRequirements()
+            ->pluck('organization_group_id')
+            ->toArray();
+
         $groups = collect($request->input('groups'))->map(fn($string) => intval($string));
         EventRegistrationOptionRequiredGroup::where('event_registration_option_id', $option->id)
             ->whereNotIn('organization_group_id', $groups->toArray())
             ->delete();
 
-        $groups->map(fn($id) => [
+        $groupIds = $groups->map(fn($id) => [
             'event_registration_option_id' => $option->id,
             'organization_group_id' => $id
         ])
-            ->each(fn($entry) => EventRegistrationOptionRequiredGroup::firstOrCreate($entry, $entry));
+            ->each(fn($entry) => EventRegistrationOptionRequiredGroup::firstOrCreate($entry, $entry))
+            ->map(fn($array) => $array['organization_group_id'])
+            ->toArray();
+
+        $option->addPendingChange('groups', $oldGroupIds, $groupIds);
+        $option->savePendingChanges();
 
         $option->update($data);
         return redirect()

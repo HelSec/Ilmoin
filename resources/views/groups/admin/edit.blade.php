@@ -43,4 +43,6 @@
             <button type="submit" class="button-pink">Save</button>
         </x-forms.field>
     </form>
+
+    <x-activity.activity :model="$group"/>
 @endsection

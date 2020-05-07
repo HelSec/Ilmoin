@@ -4,9 +4,22 @@ namespace App\Organizations\Events;
 
 use App\Organizations\OrganizationGroup;
 use Illuminate\Database\Eloquent\Model;
+use App\Activity\SavesActivityAsLogEntries;
 
 class EventRegistrationOption extends Model
 {
+    use SavesActivityAsLogEntries;
+
+    public $fieldToModelTypes = [
+        'event_id' => [Event::class, 'id'],
+        'groups' => [OrganizationGroup::class, 'id'],
+    ];
+
+    public function getFieldNameTranslationPrefix()
+    {
+        return 'events.regopts.fields.';
+    }
+
     protected $guarded = [];
     protected $with = ['groupRequirements'];
 

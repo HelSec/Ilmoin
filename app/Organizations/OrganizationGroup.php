@@ -6,10 +6,24 @@ use App\Users\User;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
+use App\Activity\SavesActivityAsLogEntries;
 
 class OrganizationGroup extends Model
 {
+    use SavesActivityAsLogEntries;
+
+    public $fieldToModelTypes = [
+        'organization_id' => [Organization::class, 'id'],
+        'members' => [User::class, 'id'],
+    ];
+
+    public function getFieldNameTranslationPrefix()
+    {
+        return 'groups.fields.';
+    }
+
     protected $guarded = [];
+    protected $appends = ['view_url'];
 
     protected $casts = [
         'is_public' => 'boolean',
@@ -44,5 +58,15 @@ class OrganizationGroup extends Model
     public function hasMember(User $user)
     {
         return $this->members->contains('id', $user->id);
+    }
+
+    public function invites()
+    {
+        return $this->hasMany(OrganizationGroupInvite::class, 'organization_group_id');
+    }
+
+    public function getViewUrlAttribute()
+    {
+        return route('groups.show', $this);
     }
 }

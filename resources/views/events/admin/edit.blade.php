@@ -165,6 +165,7 @@
                 </div>
             </div>
         </div>
-
     </div>
+
+    <x-activity.activity :model="$event"/>
 @endsection

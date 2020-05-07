@@ -25,7 +25,7 @@ class OrganizationGroupAdminController extends Controller
     {
         $data = $request->validate([
             'organization_id' => 'required|exists:organizations,id',
-            'name' => ['required|min:3'],
+            'name' => 'required|min:3',
             'description' => 'nullable|min:1',
             'is_public' => 'required|boolean',
             'is_member_list_public' => 'required|boolean',
@@ -52,7 +52,7 @@ class OrganizationGroupAdminController extends Controller
         $this->authorize('manage', $group);
 
         $data = $request->validate([
-            'name' => ['required|min:3'],
+            'name' => 'required|min:3',
             'description' => 'nullable|min:1',
             'is_public' => 'required|boolean',
             'is_member_list_public' => 'required|boolean',
