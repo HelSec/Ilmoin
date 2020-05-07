@@ -21,6 +21,10 @@
                                 <a href="{{ route('admin.groups.edit', $group) }}" class="button-pink mr-2">
                                     Edit group
                                 </a>
+                            @elsecan('join', $group)
+                                <a href="{{ route('groups.join', $group) }}" class="button-pink mr-2">
+                                    Join
+                                </a>
                             @endcan
                         @endif
                     </div>

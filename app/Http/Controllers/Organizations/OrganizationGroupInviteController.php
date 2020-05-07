@@ -67,4 +67,23 @@ class OrganizationGroupInviteController extends Controller
             ->route('groups.show', $group)
             ->with('notice', "Invited $count users");
     }
+
+    public function join(Request $request, OrganizationGroup $group)
+    {
+        $user = $request->user();
+        /** @var OrganizationGroupInvite $invite */
+        $invite = $group->invites()
+            ->where('approved_by_group', true)
+            ->where('user_id', $user->id)
+            ->firstOrFail();
+
+        $invite->update([
+            'approved_by_user' => true,
+        ]);
+        $invite->checkIfApproved();
+
+        return redirect()
+            ->route('groups.show', $group)
+            ->with('notice', "Successfully joined that group");
+    }
 }

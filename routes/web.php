@@ -34,6 +34,9 @@ Route::middleware('auth')->group(function () {
 
 Route::get('groups/{group}', 'Organizations\OrganizationGroupController@show')->name('groups.show');
 
+Route::middleware('auth')->group(function () {
+    Route::get('groups/{group}/join', 'Organizations\OrganizationGroupInviteController@join')->name('groups.join');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('user/settings/email', 'User\SettingsController@showEmailSettings')->name('settings.email');
