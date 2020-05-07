@@ -46,6 +46,9 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('groups/edit/{group}', 'Organizations\OrganizationGroupAdminController@edit')->name('admin.groups.edit');
     Route::post('groups/edit/{group}', 'Organizations\OrganizationGroupAdminController@update')->name('admin.groups.update');
 
+    Route::get('groups/invite', 'Organizations\OrganizationGroupInviteController@createInvites')->name('admin.group.invites.create');
+    Route::post('groups/invite', 'Organizations\OrganizationGroupInviteController@storeInvites')->name('admin.group.invites.store');
+
     Route::get('events/create', 'Organizations\Event\EventAdminController@create')->name('admin.events.create');
     Route::post('events/create', 'Organizations\Event\EventAdminController@store')->name('admin.events.store');
 
