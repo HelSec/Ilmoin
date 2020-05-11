@@ -4,19 +4,29 @@
 
 @section('content')
     <div class="card">
-        <div class="flex">
-            <div class="py-1 pr-4 flex-none">
-                <img src="{{ $organization->imageUrl('avatar') }}" alt="{{ $organization->name }}" class="h-16 w-16 rounded-lg"/>
+        <div class="md:flex md:justify-between w-full">
+            <div class="flex">
+                <div class="py-1 pr-4 flex-none">
+                    <img src="{{ $organization->imageUrl('avatar') }}" alt="{{ $organization->name }}" class="h-16 w-16 rounded-lg"/>
+                </div>
+
+                <div>
+                    <div class="font-bold text-2xl mb-2">
+                        {{ $organization->name }}
+                    </div>
+
+                    <div class="text-gray-700 text-base">
+                        @parsedown($organization->description)
+                    </div>
+                </div>
             </div>
 
             <div>
-                <div class="font-bold text-2xl mb-2">
-                    {{ $organization->name }}
-                </div>
-
-                <div class="text-gray-700 text-base">
-                    @parsedown($organization->description)
-                </div>
+                @can('manage', $organization)
+                    <a href="{{ route('admin.organizations.edit', $organization) }}" class="button-pink mr-2">
+                        Edit organization
+                    </a>
+                @endcan
             </div>
         </div>
     </div>

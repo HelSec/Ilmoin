@@ -7,20 +7,32 @@ use Illuminate\Database\Eloquent\Model;
 use QCod\ImageUp\HasImageUploads;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
+use App\Activity\SavesActivityAsLogEntries;
 
 class Organization extends Model
 {
     protected $guarded = [];
     protected $appends = ['view_url'];
 
+    use SavesActivityAsLogEntries;
+
     use HasSlug;
     use HasImageUploads;
+
+    public $fieldToModelTypes = [
+        'admin_group_id' => [OrganizationGroup::class, 'id'],
+    ];
 
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
             ->generateSlugsFrom('name')
             ->saveSlugsTo('slug');
+    }
+
+    public function getFieldNameTranslationPrefix()
+    {
+        return 'organizations.fields.';
     }
 
     public function getRouteKeyName()
