@@ -226,5 +226,20 @@
                 </div>
             @endforeach
         </div>
+    @else
+        @can('manage', $organization)
+            <div class="w-full mt-6">
+                <div class="md:flex md:justify-between w-full">
+                    <div class="font-bold text-xl mb-2">
+                        Groups
+                    </div>
+                    <div>
+                        <a href="{{ route('admin.groups.create', ['organization' => $organization->id]) }}" class="button-pink mr-2">
+                            Create group
+                        </a>
+                    </div>
+                </div>
+            </div>
+        @endcan
     @endif
 @endsection

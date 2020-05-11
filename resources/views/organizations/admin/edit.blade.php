@@ -31,6 +31,17 @@
             <x-forms.input-textarea name="description" :value="old('description', $organization->description)"/>
         </x-forms.field>
 
+        <x-forms.field element="div" title="Administrator group" description="Members of this group can manage this organization." class="mt-4">
+            <select class="form-select w-full" name="admin_group_id">
+                <option value="">&mdash;</option>
+                @foreach($organization->groups as $group)
+                    <option value="{{ $group->id }}" {{ old('admin_group_id', $organization->admin_group_id) == $group->id ? 'selected' : '' }}>
+                        {{ $group->name }} (ID {{ $group->id }})
+                    </option>
+                @endforeach
+            </select>
+        </x-forms.field>
+
         <x-forms.field element="div" title="Save" description="Saves the organization in the database." class="mt-4">
             <button type="submit" class="button-pink">Save</button>
         </x-forms.field>
