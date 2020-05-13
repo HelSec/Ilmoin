@@ -37,6 +37,12 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
+        Gate::before(function (User $user) {
+            if ($user->activeBlock) {
+                return false;
+            }
+        });
+
         Gate::before(function (User $user, $ability) {
             $noOverride = [
                 'join',

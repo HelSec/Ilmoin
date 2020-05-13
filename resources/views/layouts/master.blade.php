@@ -81,6 +81,19 @@
             </div>
         @endif
 
+        @if(Auth::check() && Auth::user()->activeBlock)
+            <div class="card card-no-bg bg-pink-100 text-pink-900">
+                <div>
+                    Your Ilmoin account has been blocked.
+                    @if(!empty(Auth::user()->activeBlock->public_reason))
+                        <div class="ml-2">
+                            The blocking administrator left the following comment: <span class="font-semibold">{{ Auth::user()->activeBlock->public_reason }}</span>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        @endif
+
         @yield('content')
 
         <div class="text-center text-xs text-gray-600 mt-1">Powered by
