@@ -39,7 +39,9 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('user/settings/email', 'User\SettingsController@showEmailSettings')->name('settings.email');
+    Route::get('user/{user}', 'User\UserController@show')->name('user.view');
+
+    Route::get('self/settings/email', 'User\SettingsController@showEmailSettings')->name('settings.email');
 });
 
 Route::prefix('admin')->middleware('auth')->group(function () {

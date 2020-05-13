@@ -46,9 +46,11 @@
 
             <div>
                 @auth
-                    {{ Auth::user()->email }}
+                    <a href="{{ route('user.view', Auth::user()) }}" class="p-2 mx-1 hover:bg-pink-300 hover:text-pink-900 hover:underline">
+                        {{ Auth::user()->name }}
+                    </a>
 
-                    <a href="{{ route('logout') }}"
+                    <a href="{{ route('logout') }}" class="p-2 mx-1 hover:bg-pink-300 hover:text-pink-900 hover:underline"
                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         Log out
                     </a>
