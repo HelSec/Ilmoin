@@ -67,7 +67,7 @@
 
         <div>
             @can('viewMembers', $group)
-                {{ json_encode($group->members) }}
+                <x-lists.user-list :users="$group->members"/>
             @else
                 You may not view the member list of this group.
             @endif

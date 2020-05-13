@@ -1,6 +1,8 @@
+const mix = require("laravel-mix");
+
 module.exports = {
     purge: {
-        enabled: true,
+        enabled: mix.inProduction(),
         content: [
             './resources/js/components/**/*.vue',
             './resources/views/**/*.blade.php',
