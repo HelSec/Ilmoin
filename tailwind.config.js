@@ -1,4 +1,11 @@
 module.exports = {
+    purge: {
+        enabled: true,
+        content: [
+            './resources/js/components/**/*.vue',
+            './resources/views/**/*.blade.php',
+        ],
+    },
     theme: {
         extend: {},
         customForms: (theme) => ({
