@@ -46,9 +46,11 @@
 
             <div>
                 @auth
-                    {{ Auth::user()->email }}
+                    <a href="{{ route('user.view', Auth::user()) }}" class="p-2 mx-1 hover:bg-pink-300 hover:text-pink-900 hover:underline">
+                        {{ Auth::user()->name }}
+                    </a>
 
-                    <a href="{{ route('logout') }}"
+                    <a href="{{ route('logout') }}" class="p-2 mx-1 hover:bg-pink-300 hover:text-pink-900 hover:underline"
                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         Log out
                     </a>
@@ -75,6 +77,19 @@
             <div class="card card-no-bg bg-blue-100 text-blue-900">
                 <div>
                     {{ Session::get('notice') }}
+                </div>
+            </div>
+        @endif
+
+        @if(Auth::check() && Auth::user()->activeBlock)
+            <div class="card card-no-bg bg-pink-100 text-pink-900">
+                <div>
+                    Your Ilmoin account has been blocked.
+                    @if(!empty(Auth::user()->activeBlock->public_reason))
+                        <div class="ml-2">
+                            The blocking administrator left the following comment: <span class="font-semibold">{{ Auth::user()->activeBlock->public_reason }}</span>
+                        </div>
+                    @endif
                 </div>
             </div>
         @endif

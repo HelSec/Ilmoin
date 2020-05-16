@@ -38,7 +38,20 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::before(function (User $user) {
-            if ($user->is_super_admin) {
+            if ($user->activeBlock) {
+                return false;
+            }
+        });
+
+        Gate::before(function (User $user, $ability) {
+            $noOverride = [
+                'join',
+                'attend',
+                'cancel',
+                'confirm',
+            ];
+
+            if ($user->is_super_admin && !in_array($ability, $noOverride)) {
                 return true;
             }
         });

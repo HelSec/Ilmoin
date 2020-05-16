@@ -29,6 +29,11 @@ class User extends Authenticatable
         'viewUrl',
     ];
 
+    public function activeBlock()
+    {
+        return $this->hasOne(GlobalBlock::class)->active();
+    }
+
     public function groups()
     {
         return $this->belongsToMany(OrganizationGroup::class, OrganizationGroupMember::class);

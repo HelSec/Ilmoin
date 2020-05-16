@@ -39,10 +39,18 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('user/settings/email', 'User\SettingsController@showEmailSettings')->name('settings.email');
+    Route::get('user/{user}', 'User\UserController@show')->name('user.view');
+
+    Route::get('self/settings/email', 'User\SettingsController@showEmailSettings')->name('settings.email');
 });
 
 Route::prefix('admin')->middleware('auth')->group(function () {
+    Route::get('organizations/create', 'Organizations\OrganizationAdminController@create')->name('admin.organizations.create');
+    Route::post('organizations/create', 'Organizations\OrganizationAdminController@store')->name('admin.organizations.store');
+
+    Route::get('organizations/edit/{organization}', 'Organizations\OrganizationAdminController@edit')->name('admin.organizations.edit');
+    Route::post('organizations/edit/{organization}', 'Organizations\OrganizationAdminController@update')->name('admin.organizations.update');
+
     Route::get('groups/create', 'Organizations\OrganizationGroupAdminController@create')->name('admin.groups.create');
     Route::post('groups/create', 'Organizations\OrganizationGroupAdminController@store')->name('admin.groups.store');
 

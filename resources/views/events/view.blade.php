@@ -67,6 +67,12 @@
     </div>
 
     <div class="card">
-        {{ json_encode($event->registrations) }}
+        <div class="font-bold text-xl mb-2">
+            Attendees ({{ $event->registrations->count() }})
+        </div>
+
+        <div>
+            <x-lists.user-list :users="$event->registrations->pluck('user')"/>
+        </div>
     </div>
 @endsection

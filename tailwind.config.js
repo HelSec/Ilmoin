@@ -1,4 +1,13 @@
+const mix = require("laravel-mix");
+
 module.exports = {
+    purge: {
+        enabled: mix.inProduction(),
+        content: [
+            './resources/js/components/**/*.vue',
+            './resources/views/**/*.blade.php',
+        ],
+    },
     theme: {
         extend: {},
         customForms: (theme) => ({
