@@ -11,6 +11,17 @@
 |
 */
 
+// Developer/testing helper routes
+
+if (env('APP_DEBUG')) {
+    Route::prefix('debug')->group(function () {
+        Route::get('login/{user_id}', function (int $user_id) {
+            Auth::login(App\Users\User::find($user_id));
+            return redirect('/');
+        });
+    });
+}
+
 Route::view('/', 'welcome')->name('home');
 
 Route::get('auth/mattermost', 'Auth\MattermostAuthController@login')->name('login');
