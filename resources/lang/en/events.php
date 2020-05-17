@@ -9,6 +9,7 @@ return [
         'location' => 'Location',
         'date' => 'Date',
         'max_slots' => 'Maximum slots',
+        'last_cancel_date' => 'Last cancel date'
     ],
 
     'regopts' => [

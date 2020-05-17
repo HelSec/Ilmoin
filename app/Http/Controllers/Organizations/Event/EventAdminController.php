@@ -35,6 +35,7 @@ class EventAdminController extends Controller
             'date' => 'required|date|after:now',
             'location' => 'required|min:3',
             'max_slots' => 'nullable|integer',
+            'last_cancel_date' => 'nullable|date|after:now|before_or_equal:date',
         ]);
 
         $organization = Organization::findOrFail($data['organization_id']);
@@ -72,10 +73,15 @@ class EventAdminController extends Controller
             'date' => 'required|date',
             'location' => 'required|min:3',
             'max_slots' => 'nullable|integer',
+            'last_cancel_date' => 'nullable|date|after:now|before_or_equal:date',
         ]);
 
         if (!$data['max_slots']) {
             $data['max_slots'] = null; // allow clearing it
+        }
+
+        if (!$data['last_cancel_date']) {
+            $data['last_cancel_date'] = null;
         }
 
         $organization = Organization::findOrFail($data['organization_id']);
