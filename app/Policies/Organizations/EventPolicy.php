@@ -4,6 +4,8 @@ namespace App\Policies\Organizations;
 
 use App\Organizations\Events\Event;
 use App\Users\User;
+use App\Utils\Date;
+use Carbon\Carbon;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class EventPolicy
@@ -22,7 +24,8 @@ class EventPolicy
 
     public function cancel(User $user, Event $event)
     {
-        return $event->registrations()->where('user_id', $user->id)->exists();
+        return $event->registrations()->where('user_id', $user->id)->exists()
+            && Date::getCarbon($event->last_cancel_date)->greaterThanOrEqualTo(Carbon::now());
     }
 
     public function confirm(User $user, Event $event)
