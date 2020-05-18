@@ -15,7 +15,7 @@
                                 {{ $logEntry->user->name }}
                             </span>
                         </a>
-                    @elseif($logEntry->user_id === 0)
+                    @elseif($logEntry->user_id === 0 || $logEntry->user_id === null)
                         <span>Maintenance Script</span>
                     @else
                         <span>Deleted User #{{ $logEntry->user_id }}</span>

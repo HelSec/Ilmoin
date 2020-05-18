@@ -51,6 +51,6 @@ class User extends Authenticatable
 
     public function getViewUrlAttribute()
     {
-        return '/';
+        return route('user.view', $this);
     }
 }

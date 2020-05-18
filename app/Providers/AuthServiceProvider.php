@@ -10,6 +10,7 @@ use App\Policies\Organizations\OrganizationGroupPolicy;
 use App\Policies\Organizations\OrganizationPolicy;
 use App\Users\MattermostSocialiteProvider;
 use App\Users\User;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -37,9 +38,15 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::before(function (User $user) {
-            if ($user->activeBlock) {
-                return false;
+        Gate::before(function (User $user, $ability) {
+            $noOverride = [
+                'view',
+                'viewMembers',
+            ];
+
+            // disallow blocked users from doing anything
+            if ($user->activeBlock && !in_array($ability, $noOverride)) {
+                return Response::deny('You have been blocked.');
             }
         });
 
