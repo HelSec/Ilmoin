@@ -32,6 +32,17 @@
                     @endif
                 </div>
 
+                <p>
+                    Not sure if you really can attend?
+                    @if ($event->last_cancel_date !== null)
+                        Cancel up to {{ \App\Utils\Date::format($event->last_cancel_date) }}
+                        <em>({{ \App\Utils\Date::diff($event->last_cancel_date, $event->date) }})</em>
+                        so someone else can get your place.
+                    @else
+                        Remember to cancel your attendance well before event so someone else can get your place.
+                    @endif
+                </p>
+
                 {{-- TODO: write some text here explaining stuff about cancelling etc --}}
                 <p>
                     Someone should write something about cancelling this and some other stuff and add the text here.

@@ -102,6 +102,31 @@
             </div>
         </label>
 
+        <label class="mt-6 block md:flex">
+            <div class="md:w-1/3">
+                <div class="font-semibold text-black mb-2">Last cancel date</div>
+                <div class="text-gray-700 text-sm">The last date attendees are able to cancel their spot. Not required.</div>
+            </div>
+
+            <div class="md:w-2/3">
+                <div>
+                    <input type="datetime-local" name="last_cancel_date" class="form-input w-full"
+                           value="{{ old('last_cancel_date') }}">
+                </div>
+
+                <p class="text-gray-700">
+                    If your browser does not support
+                    <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-local" class="text-blue-700 underline hover:no-underline"><code>
+                            &lt;input type="datetime-local"&gt;</code></a>,
+                    please use format
+                    <code>
+                        YYYY-MM-DD<span class="text-blue-500">T</span>HH:MM</code>.
+
+                    Current timezone is <span>{{ config('app.timezone') }}</span>.
+                </p>
+            </div>
+        </label>
+
         <div class="mt-6 md:flex">
             <div class="md:w-1/3">
                 <div class="font-semibold text-black mb-2">Save</div>
