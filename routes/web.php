@@ -13,7 +13,7 @@
 
 // Developer/testing helper routes
 
-if (env('APP_DEBUG')) {
+if (config('app.debug')) {
     Route::prefix('debug')->group(function () {
         Route::get('login/{user}', function (App\Users\User $user) {
             Auth::login($user);
