@@ -22,9 +22,9 @@ class CreateGlobalBlocksTable extends Migration
                 ->onDelete('cascade');
 
             $table->text('public_reason')
-                ->default('');
+                ->nullable();
             $table->text('private_reason')
-                ->default('');
+                ->nullable();
 
             $table->timestamp('expires_at');
             $table->boolean('is_unblocked')
