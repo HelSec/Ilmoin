@@ -15,8 +15,8 @@
 
 if (env('APP_DEBUG')) {
     Route::prefix('debug')->group(function () {
-        Route::get('login/{user_id}', function (int $user_id) {
-            Auth::login(App\Users\User::find($user_id));
+        Route::get('login/{user}', function (App\Users\User $user) {
+            Auth::login($user);
             return redirect('/');
         });
     });
