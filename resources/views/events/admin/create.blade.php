@@ -111,8 +111,7 @@
             <div class="md:w-2/3">
                 <div>
                     <input type="datetime-local" name="last_cancel_date" class="form-input w-full"
-                           value="{{ old('last_cancel_date',
-                                $event->last_cancel_date ? \App\Utils\Date::fromString($event->last_cancel_date)->tz(config('app.timezone'))->format('Y-m-d\\TH:i') : null) }}">
+                           value="{{ old('last_cancel_date') }}">
                 </div>
 
                 <p class="text-gray-700">
