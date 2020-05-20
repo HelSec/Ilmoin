@@ -76,7 +76,7 @@ class Organization extends Model
             'width' => '64',
             'height' => '64',
             'path' => 'avatars/organizations',
-            'placeholder' => '/storage/placeholders/64.png',
+            'placeholder' => '/storage/placeholders/avatar.svg',
         ]
     ];
 
