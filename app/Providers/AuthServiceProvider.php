@@ -28,6 +28,28 @@ class AuthServiceProvider extends ServiceProvider
     ];
 
     /**
+     * These capabilities aren't overridden by the `is_super_admin` user attribute
+     *
+     * @var string[]
+     */
+    protected $noAdminOverride = [
+        'join',
+        'attend',
+        'cancel',
+        'confirm',
+    ];
+
+    /**
+     * These capabilities aren't overridden by global Ilmoin blocks.
+     *
+     * @var string[]
+     */
+    public $noBlockOverride = [
+        'view',
+        'viewMembers',
+    ];
+
+    /**
      * Register any authentication / authorization services.
      *
      * @return void
@@ -37,21 +59,12 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::before(function (User $user) {
-            if ($user->activeBlock) {
+        Gate::before(function (User $user, $ability) {
+            if ($user->activeBlock && !in_array($ability, $this->noBlockOverride)) {
                 return false;
             }
-        });
 
-        Gate::before(function (User $user, $ability) {
-            $noOverride = [
-                'join',
-                'attend',
-                'cancel',
-                'confirm',
-            ];
-
-            if ($user->is_super_admin && !in_array($ability, $noOverride)) {
+            if ($user->is_super_admin && !in_array($ability, $this->noAdminOverride)) {
                 return true;
             }
         });
