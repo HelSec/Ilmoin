@@ -31,6 +31,9 @@ class GlobalBlock extends Model
     public function scopeActive(Builder $query)
     {
         return $query->where('is_unblocked', false)
-            ->where('expires_at', '>=', now());
+            ->where(function (Builder $query) {
+                $query->whereNull('expires_at')
+                    ->orWhere('expires_at', '>=', now());
+            });
     }
 }

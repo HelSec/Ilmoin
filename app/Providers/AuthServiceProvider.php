@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Users\GlobalBlock;
 use App\Organizations\Events\Event;
 use App\Organizations\Organization;
 use App\Organizations\OrganizationGroup;
+use App\Policies\Users\GlobalBlockPolicy;
 use App\Policies\Organizations\EventPolicy;
 use App\Policies\Organizations\OrganizationGroupPolicy;
 use App\Policies\Organizations\OrganizationPolicy;
@@ -25,6 +27,8 @@ class AuthServiceProvider extends ServiceProvider
         Organization::class => OrganizationPolicy::class,
         OrganizationGroup::class => OrganizationGroupPolicy::class,
         Event::class => EventPolicy::class,
+
+        GlobalBlock::class => GlobalBlockPolicy::class,
     ];
 
     /**

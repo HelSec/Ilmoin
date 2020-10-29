@@ -38,8 +38,7 @@
                 ] as $title => $link)
                     <div>
                         <a href="{{ $link }}" class="p-2 mx-1 hover:bg-pink-300 hover:text-pink-900 hover:underline">
-                            {{ $title }}
-                        </a>
+                            {{ $title }}</a>
                     </div>
                 @endforeach
             </div>
@@ -47,17 +46,14 @@
             <div>
                 @auth
                     <a href="{{ route('user.view', Auth::user()) }}" class="p-2 mx-1 hover:bg-pink-300 hover:text-pink-900 hover:underline">
-                        {{ Auth::user()->name }}
-                    </a>
+                        {{ Auth::user()->name }}</a>
 
                     <a href="{{ route('logout') }}" class="p-2 mx-1 hover:bg-pink-300 hover:text-pink-900 hover:underline"
                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        Log out
-                    </a>
+                        Log out</a>
                 @else
                     <a href="{{ route('login') }}">
-                        Login
-                    </a>
+                        Login</a>
                 @endif
             </div>
         </div>
@@ -85,6 +81,11 @@
             <div class="card card-no-bg bg-pink-100 text-pink-900">
                 <div>
                     Your Ilmoin account has been blocked.
+                    @if($user->activeBlock->expires_at)
+                        <div class="ml-2">
+                            The block expires at {{ \App\Utils\Date::format($user->activeBlock->expires_at) }}.
+                        </div>
+                    @endif
                     @if(!empty(Auth::user()->activeBlock->public_reason))
                         <div class="ml-2">
                             The blocking administrator left the following comment: <span class="font-semibold">{{ Auth::user()->activeBlock->public_reason }}</span>
